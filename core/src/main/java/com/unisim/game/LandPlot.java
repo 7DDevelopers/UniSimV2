@@ -26,6 +26,14 @@ public class LandPlot extends Actor {
     private final int x, y, width, height;
     private boolean occupied;
 
+    public Button getButton() {
+        return button;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
     Button button;
     Image image;
     Skin skin;

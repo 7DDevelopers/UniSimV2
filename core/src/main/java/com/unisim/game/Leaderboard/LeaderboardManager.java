@@ -24,6 +24,9 @@ public class LeaderboardManager {
     public void addEntry(String name, int score){
         Entry scoreEntry = new Entry(name, score);
         leaderboard.add(scoreEntry);
+        leaderboard.sort((entry1, entry2) -> {
+            return Integer.compare(entry2.getScore(), entry1.getScore()); // Sort descending
+        });
     }
 
     public void importLeaderboard(){
