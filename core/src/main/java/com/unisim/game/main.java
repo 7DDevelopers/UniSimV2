@@ -156,7 +156,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
     }
 
     public void saveScore(){
-        leaderboardManager.addEntry("Luke", 5);
+        leaderboardManager.addEntry("Luke", mainStage.getScore());
         leaderboardManager.writeLeaderBoard();
     }
 

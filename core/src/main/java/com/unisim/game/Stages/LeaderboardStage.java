@@ -50,10 +50,13 @@ public class LeaderboardStage extends Stage {
 
         leaderboardTable.setPosition((Gdx.graphics.getWidth() - leaderboardTable.getWidth()) / 2,
             (Gdx.graphics.getHeight() - leaderboardTable.getHeight()) / 2);
-        for(Entry entry : game.leaderboardManager.getLeaderboard()){
-            leaderboardTable.add(entry.getName()).padRight((20));
-            leaderboardTable.add(Integer.toString((entry.getScore()))).row();
+
+        for (int i = 0; i < game.leaderboardManager.getLeaderboard().size() && i < 5; i++) {
+            Entry entry = game.leaderboardManager.getLeaderboard().get(i);
+            leaderboardTable.add(entry.getName()).padRight(20);
+            leaderboardTable.add(Integer.toString(entry.getScore())).row();
         }
+
         this.addActor(leaderboardTable);
         this.addActor(leaderboardButtonTable);
 

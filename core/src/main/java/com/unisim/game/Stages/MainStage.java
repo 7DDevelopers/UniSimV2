@@ -71,6 +71,10 @@ public class MainStage extends Stage {
     }
 
 
+    public int getScore() {
+        return score;
+    }
+
     public void initialize(){
 
         // Sets up mainStage
