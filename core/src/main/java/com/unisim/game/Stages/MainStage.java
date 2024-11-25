@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.unisim.game.Events.EventManager;
 import com.unisim.game.Leaderboard.LeaderboardManager;
 import com.unisim.game.*;
 
@@ -48,14 +49,14 @@ public class MainStage extends Stage {
     // Attributes for the display and behaviour of the score and timer.
 
     /**The score achieved by the player.*/
-    int score = 3;
+    int score=0;
     /**Handles the display of {@code score}.*/
     Label scoreTextLabel;
     float time;
 
+    EventManager eventManager;
 
-
-
+    public ScoreManager scoreManager;
 
 
 
@@ -70,6 +71,11 @@ public class MainStage extends Stage {
         this.time = time;
     }
 
+    public void updateScore(){
+        score = scoreManager.calculateScore();
+        scoreTextLabel.setText(score);
+    }
+
 
     public int getScore() {
         return score;
@@ -78,8 +84,9 @@ public class MainStage extends Stage {
     public void initialize(){
 
         // Sets up mainStage
-
-
+        eventManager = new EventManager();
+        eventManager.startFreshersWeek(time);
+        scoreManager = new ScoreManager(this);
         this.addActor(new GameMap());
 
         // Sets up labels for buildings and counter columns
@@ -91,7 +98,7 @@ public class MainStage extends Stage {
         // Creates filepath array using buildingTypes.
         filePaths = new String[5];
         for (int i = 0; i < filePaths.length; i++) {
-            filePaths[i] = game.getBuildingTypes()[i].getName();
+            filePaths[i] = game.getBuildingTypes()[i].getPath();
         }
 
         // Sets up buttons for building selection/deselection.
@@ -222,14 +229,15 @@ public class MainStage extends Stage {
         landPlots[6] = new LandPlot(3, bw + (int)(20.7 * pxpt), 11 * pxpt, size3, size3);
         landPlots[7] = new LandPlot(3, bw + (int)(24.2 * pxpt), 11 * pxpt, size3, size3);
         landPlots[8] = new LandPlot(2, bw + 24 * pxpt, (int)(6.5 * pxpt), size2, size2);
-
         // Adds the LandPlot components to mainStage.
         for (LandPlot landPlot : landPlots) {
             this.addActor(landPlot.getImage());
             this.addActor(landPlot.getButton());
             this.addActor(landPlot);
         }
+    }
 
-        //Gdx.input.setInputProcessor(menuStage);
+    public LandPlot[] getLandPlots() {
+        return landPlots;
     }
 }

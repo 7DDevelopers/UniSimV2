@@ -43,15 +43,18 @@ public class main extends ApplicationAdapter implements InputProcessor {
     /**The default types of {@link Building} that are deep copied when a {@link Building} is associated with a specific
      * {@link LandPlot}.*/
     static Building[] buildingTypes = new Building[]{
-        new Building("Accommodation.png", 3),
-        new Building("LectureHall.png", 3 ),
-        new Building("FoodHall.png", 3),
-        new Building("Gym.png", 2),
-        new Building("Club.png", 2)
+        new Building("Accommodation.png", 3, "Accommodation"),
+        new Building("LectureHall.png", 3, "LectureHall"),
+        new Building("FoodHall.png", 3, "FoodHall"),
+        new Building("Gym.png", 2, "Gym"),
+        new Building("Club.png", 2, "Club")
     };
 
+    float timer_t = 1;
+    float timer = timer_t;
+
     /**The time left for game play.*/
-    float time = 3f;
+    float time = 300f;
     /**Whether the score for the current game has been saved.*/
     boolean scoreSaved = false;
     /**The background colour used for all stages.*/
@@ -91,11 +94,12 @@ public class main extends ApplicationAdapter implements InputProcessor {
         tutorialStage = new TutorialStage(this);
         leaderboardStage = new LeaderboardStage(this);
         endTimeStage = new EndTimeStage(this);
+
     }
 
-
-
-
+    public boolean isScoreSaved() {
+        return scoreSaved;
+    }
     @Override
     public void render() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -123,6 +127,13 @@ public class main extends ApplicationAdapter implements InputProcessor {
                 Gdx.input.setInputProcessor(mainStage);
                 mainStage.act(Gdx.graphics.getDeltaTime());
                 mainStage.draw();
+                mainStage.updateTime(time);
+                if(timer > 0) {
+                    timer -= Gdx.graphics.getDeltaTime();;
+                } else {
+                    mainStage.updateScore();
+                    timer = timer_t;
+                }
                 if (time <= 0){
                     sceneId = 4;
                 }

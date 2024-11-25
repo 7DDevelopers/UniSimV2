@@ -10,15 +10,17 @@ public class Building {
     private String filepath;
     /** Size of building - can only be 2 or 3. */
     private int size;
+    private String buildingName;
 
-    public Building(String filepath, int size) {
+    public Building(String filepath, int size, String buildingName) {
         this.filepath = filepath;
+        this.buildingName = buildingName;
         if (size == 2 || size == 3) this.size = size;
         else this.size = 2;
     }
 
     /**Returns the filepath of the building image*/
-    public String getName() {
+    public String getPath() {
         return filepath;
     }
 
@@ -26,10 +28,12 @@ public class Building {
         return size;
     }
 
+    public String getName(){return buildingName;}
+
     /**
      * @return A new {@link Building} instance with the same attributes.
      */
     public Building deepCopy() {
-        return new Building(getName(), getSize());
+        return new Building(getPath(), getSize(), getName());
     }
 }

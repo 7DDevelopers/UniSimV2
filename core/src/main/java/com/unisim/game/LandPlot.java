@@ -8,9 +8,12 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+
+import java.util.ArrayList;
 
 /**
  * Represents an area of land where a building can be placed. LandPlot extends {@link Actor} and primarily contains an
@@ -52,7 +55,6 @@ public class LandPlot extends Actor {
         this.height = height;
         buildingPlaced = null;
         occupied = false;
-
         greenTexture = new Texture(Gdx.files.internal("textures/green.png"));
         redTexture = new Texture(Gdx.files.internal("textures/red.png"));
         seeThroughTexture = new Texture(Gdx.files.internal("textures/SeeThrough.png"));
@@ -78,7 +80,8 @@ public class LandPlot extends Actor {
                     && main.buildingTypes[main.selectedBuilding].getSize() <= maxSize)  {
                     // Sets the building of the LandPlot, and the texture needed for the image.
                     buildingPlaced = main.buildingTypes[main.selectedBuilding].deepCopy();
-                    imageTexture = new Texture(Gdx.files.internal(buildingPlaced.getName()));
+
+                    imageTexture = new Texture(Gdx.files.internal(buildingPlaced.getPath()));
 
                     // Disables the state of a building being selected for placement.
                     main.selectedBuilding = -1;
@@ -119,5 +122,9 @@ public class LandPlot extends Actor {
 
     public boolean isOccupied() {
         return occupied;
+    }
+
+    public Building getBuildingPlaced(){
+        return  buildingPlaced;
     }
 }
