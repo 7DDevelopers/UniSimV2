@@ -131,7 +131,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
                 if(timer > 0) {
                     timer -= Gdx.graphics.getDeltaTime();;
                 } else {
-                    mainStage.updateScore();
+                    mainStage.oneSecondTimer();
                     timer = timer_t;
                 }
                 if (time <= 0){

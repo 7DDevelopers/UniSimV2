@@ -17,13 +17,10 @@ public class ScoreManager {
     }
 
     public int calculateScore(){
-        System.out.println("-------");
         for(LandPlot landPlot : game.getLandPlots()){
-
             if (landPlot.isOccupied()){
                 Building buildingOnLandplot = landPlot.getBuildingPlaced();
                 String buildingName = buildingOnLandplot.getName();
-                System.out.println(buildingName);
                 switch (buildingName){
                     case "Accommodation":
                         score += 10;
@@ -45,11 +42,8 @@ public class ScoreManager {
                 }
             }
             else{
-                System.out.println("Unoccupied");
             }
-
         }
-        System.out.println("------");
         return score;
     }
 

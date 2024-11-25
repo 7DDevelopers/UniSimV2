@@ -71,9 +71,14 @@ public class MainStage extends Stage {
         this.time = time;
     }
 
-    public void updateScore(){
+    public void oneSecondTimer(){
+        eventManager.eventChecker(time);
         score = scoreManager.calculateScore();
         scoreTextLabel.setText(score);
+        System.out.println(Math.ceil(time));
+        if(Math.ceil(time) == 299){
+            eventManager.startFreshersWeek(time);
+        }
     }
 
 
@@ -85,7 +90,6 @@ public class MainStage extends Stage {
 
         // Sets up mainStage
         eventManager = new EventManager();
-        eventManager.startFreshersWeek(time);
         scoreManager = new ScoreManager(this);
         this.addActor(new GameMap());
 

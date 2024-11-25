@@ -71,4 +71,14 @@ public class EventManager {
         return bonusPoints;
     }
 
+    public void eventChecker(float time){
+        if (freshersWeekEvent.isActive()){
+            if (freshersWeekEvent.timeActivated-time >= freshersWeekEvent.duration){
+                System.out.println("Freshers week has ended");
+                freshersWeekEvent.end();
+
+            }
+        }
+    }
+
 }
