@@ -5,7 +5,6 @@ import com.unisim.game.Stages.MainStage;
 import java.net.Inet4Address;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class ScoreManager {
     /**Contains the {@link LandPlot} for building placement on the map.*/
