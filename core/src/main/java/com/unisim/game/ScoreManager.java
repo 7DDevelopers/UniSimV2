@@ -24,14 +24,21 @@ public class ScoreManager {
                 switch (buildingName){
                     case "Accommodation":
                         score += 10;
+                        break;
                     case "LectureHall":
                         score+=10;
+                        break;
                     case "FoodHall":
                         score +=5;
+                        break;
                     case "Gym":
                         score += 5;
+                        break;
                     case "Club":
                         score +=5;
+                        break;
+                    default:
+                        break;
                 }
             }
             else{
