@@ -17,13 +17,30 @@ public class ScoreManager {
     }
 
     public int calculateScore(){
-        for(LandPlot landPlot : game.getLandPlots()){
+        for(int i = 0; i<9; i++){
+            LandPlot landPlot = game.getLandPlots()[i];
             if (landPlot.isOccupied()){
                 Building buildingOnLandplot = landPlot.getBuildingPlaced();
                 String buildingName = buildingOnLandplot.getName();
+
                 switch (buildingName){
                     case "Accommodation":
                         score += 10;
+                        for(int nearbyBuildingIndex: nearbyLandPlot(i)){
+                            System.out.println(nearbyBuildingIndex);
+                            LandPlot nearbyLandplot = game.getLandPlots()[nearbyBuildingIndex];
+                            if(nearbyLandplot.isOccupied()){
+                                Building nearbyBuilding = nearbyLandplot.getBuildingPlaced();
+                                String nearbyBuildingName = nearbyBuilding.getName();
+                                if (nearbyBuildingName == "FoodHall"){
+                                    score+=5;
+                                } else if (nearbyBuildingName == "Gym") {
+                                    score +=5;
+                                } else if (nearbyBuildingName == "Club") {
+                                    score+=5;
+                                }
+                            }
+                        }
                         break;
                     case "LectureHall":
                         score+=10;
@@ -40,8 +57,6 @@ public class ScoreManager {
                     default:
                         break;
                 }
-            }
-            else{
             }
         }
         return score;
