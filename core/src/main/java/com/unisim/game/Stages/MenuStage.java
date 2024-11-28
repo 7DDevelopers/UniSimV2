@@ -21,6 +21,9 @@ public class MenuStage extends Stage {
     /**The button on the main menu that takes the player to the leaderboard.*/
     ImageButton leaderboardImgButton;
 
+    /**The button on the main menu that takes the player to the achievements.*/
+    ImageButton achievementsImgButton;
+
     public MenuStage(main game) {
         this.game = game;
         initialize();
@@ -39,8 +42,6 @@ public class MenuStage extends Stage {
 
         // Sets up "leaderboard" button on menuStage.
 
-
-
         leaderboardImgButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/Leaderboard.png")))));
         leaderboardImgButton.addListener(new ClickListener() {
             @Override
@@ -48,6 +49,17 @@ public class MenuStage extends Stage {
                 game.setSceneId(5);
             }
         });
+
+        // Sets up "acheivements" button on menuStage.
+
+        achievementsImgButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/Achievements.png")))));
+        achievementsImgButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setSceneId(6);
+            }
+        });
+
         // Sets up text on menuStage.
         Image mainMenuText = new Image(new Texture(Gdx.files.internal("text/HomeText.png")));
 
@@ -58,6 +70,8 @@ public class MenuStage extends Stage {
         mainMenuTable.add(playImgButton);
         mainMenuTable.row();
         mainMenuTable.add(leaderboardImgButton);
+        mainMenuTable.row();
+        mainMenuTable.add(achievementsImgButton);
         mainMenuTable.setPosition(Gdx.graphics.getWidth() / 2f - mainMenuTable.getWidth() / 2,
             Gdx.graphics.getHeight()/2f - mainMenuTable.getHeight() / 2);
 
