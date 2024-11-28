@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.unisim.game.Achievements.AchievementManager;
 import com.unisim.game.Leaderboard.LeaderboardManager;
 import com.unisim.game.Stages.*;
 
@@ -35,6 +36,8 @@ public class main extends ApplicationAdapter implements InputProcessor {
     EndTimeStage endTimeStage;
     /**The stage that shows when the leaderboard is viewed.*/
     LeaderboardStage leaderboardStage;
+    /**The stage that shows when the achievements are viewed.*/
+    AchievementsStage achievementStage;
 
     /**Represents which {@link Building} from {@code buildingTypes} has been selected for placement. -1 by default when
      * nothing is selected.*/
@@ -65,6 +68,9 @@ public class main extends ApplicationAdapter implements InputProcessor {
     /**The leaderboard manager used to access and modify the leaderboard file.*/
     public LeaderboardManager leaderboardManager;
 
+    /**The achievement manager used to manage achievements.*/
+    public AchievementManager achievementManager;
+
     @Override
     public void create() {
         // Sets up skin for labels on mainStage
@@ -87,14 +93,16 @@ public class main extends ApplicationAdapter implements InputProcessor {
         // Sets up leaderboard manager
         leaderboardManager = new LeaderboardManager("leaderboard.csv");
 
+        //Sets up achievement manager
+        achievementManager = new AchievementManager("achievements.csv");
 
         menuStage = new MenuStage(this);
         mainStage = new MainStage(this);
         pauseStage = new PauseStage(this);
         tutorialStage = new TutorialStage(this);
         leaderboardStage = new LeaderboardStage(this);
+        achievementStage = new AchievementsStage(this);
         endTimeStage = new EndTimeStage(this);
-
     }
 
     public boolean isScoreSaved() {
@@ -162,6 +170,11 @@ public class main extends ApplicationAdapter implements InputProcessor {
                 Gdx.input.setInputProcessor(leaderboardStage);
                 leaderboardStage.act(Gdx.graphics.getDeltaTime());
                 leaderboardStage.draw();
+                break;
+            case 6:
+                Gdx.input.setInputProcessor(achievementStage);
+                achievementStage.act(Gdx.graphics.getDeltaTime());
+                achievementStage.draw();
                 break;
         }
     }
