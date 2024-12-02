@@ -6,13 +6,18 @@ public class Achievement {
     private String name;
     private String description;
     private Image thumbnail;
-    private Image textImage;
 
-    public Achievement(String name, String desc, Image thumbnail, Image textImage) {
+    private int currentProgress;
+    private int requiredProgress;
+    private boolean continuous;
+
+    public Achievement(String name, String desc, Image thumbnail, int currentProgress, int requiredProgress, boolean continuous) {
         this.name = name;
         this.description = desc;
         this.thumbnail = thumbnail;
-        this.textImage = textImage;
+        this.currentProgress = currentProgress;
+        this.requiredProgress = requiredProgress;
+        this.continuous = continuous;
     }
 
     public void setRequirements(){
@@ -27,11 +32,23 @@ public class Achievement {
         return description;
     }
 
-    public Image getTextImage(){
-        return textImage;
-    }
-
     public Image getThumbnail(){
         return thumbnail;
+    }
+
+    public int getCurrentProgress() {
+        return currentProgress;
+    }
+
+    public void setCurrentProgress(int progress) {
+        currentProgress = progress;
+    }
+
+    public int getRequiredProgress() {
+        return requiredProgress;
+    }
+
+    public boolean isContinuous() {
+        return continuous;
     }
 }

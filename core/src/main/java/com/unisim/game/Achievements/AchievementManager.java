@@ -3,17 +3,23 @@ package com.unisim.game.Achievements;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.sun.tools.javac.Main;
+import com.unisim.game.LandPlot;
+import com.unisim.game.Stages.MainStage;
+import com.unisim.game.main;
 
 import java.io.*;
 import java.util.*;
 import java.util.ArrayList;
 
 public class AchievementManager {
+    private final main game;
+
     private String path;
     private List<Achievement> achievements;
 
-
-    public AchievementManager(String path){
+    public AchievementManager(String path, main game){
+        this.game = game;
         this.path = path;
         File file = new File(path);
         achievements = new ArrayList<>();
@@ -25,8 +31,8 @@ public class AchievementManager {
         }
         importAchievements();
     }
-    public void addAchievement(String name, String description, Image thumbnail, Image textImage){
-        Achievement scoreAchievement = new Achievement(name, description, thumbnail, textImage);
+    public void addAchievement(String name, String description, Image thumbnail, int currentProgress, int requiredProgress, boolean continuous){
+        Achievement scoreAchievement = new Achievement(name, description, thumbnail, currentProgress, requiredProgress, continuous);
         achievements.add(scoreAchievement);
     }
 
@@ -40,7 +46,7 @@ public class AchievementManager {
             while((line = reader.readLine()) != null){
 
                 String[] row = line.split(",");
-                Achievement achievement = new Achievement(row[0], row[1], new Image(new Texture("ui/AchievementImages/" + row[2])), new Image(new Texture("ui/AchievementImages/AchievementTextBackground.png")));
+                Achievement achievement = new Achievement(row[0], row[1], new Image(new Texture("ui/AchievementImages/" + row[2])), Integer.parseInt(row[3]), Integer.parseInt(row[4]), row[5] == "true");
                 achievements.add(achievement);
             }
         }
@@ -71,6 +77,39 @@ public class AchievementManager {
             System.err.println("Error writing achievements");
         }
 
+    }
+
+    //Listen for achievements
+    public void CheckContinuousAchievements(){
+        //Prestigious
+        achievements.get(0).setCurrentProgress(5);
+
+        //Clubber
+        int lpCount = 0;
+        for (LandPlot landPlot : game.mainStage.getLandPlots()) {
+            if(landPlot.getBuildingPlaced() != null) {
+                if (landPlot.getBuildingPlaced().getName() == "Club") {
+                    lpCount++;
+                }
+            }
+        }
+        achievements.get(1).setCurrentProgress(lpCount);
+
+        for(Achievement achievement : achievements){
+            if (!achievement.isContinuous()) return;
+
+            if(achievement.getCurrentProgress() >= achievement.getRequiredProgress()){
+                System.out.println("Obtained: " + achievement.getName());
+            }
+        }
+    }
+
+    private void checkEndAchievements(){
+        for(Achievement achievement : achievements){
+            if (achievement.isContinuous()) return;
+
+
+        }
     }
 
     private void clearLocalAchievements(){

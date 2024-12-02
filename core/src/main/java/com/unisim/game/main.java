@@ -27,7 +27,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
     /**The stage for the menu displayed at the start of the game.*/
     MenuStage menuStage;
     /**The stage where the player plays the game.*/
-    MainStage mainStage;
+    public MainStage mainStage;
     /**The stage for when the game is paused.*/
     PauseStage pauseStage;
     /**The stage to show the player the tutorial.*/
@@ -94,7 +94,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
         leaderboardManager = new LeaderboardManager("leaderboard.csv");
 
         //Sets up achievement manager
-        achievementManager = new AchievementManager("achievements.csv");
+        achievementManager = new AchievementManager("achievements.csv", this);
 
         menuStage = new MenuStage(this);
         mainStage = new MainStage(this);
@@ -122,6 +122,9 @@ public class main extends ApplicationAdapter implements InputProcessor {
 
             //Update the timer display
             mainStage.timeTextLabel.setText(String.format("%d:%02d", minutes, seconds));
+
+            //Check Achievements
+            achievementManager.CheckContinuousAchievements();
         }
 
         // Render the correct scene

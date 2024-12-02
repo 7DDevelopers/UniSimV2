@@ -125,6 +125,6 @@ public class LandPlot extends Actor {
     }
 
     public Building getBuildingPlaced(){
-        return  buildingPlaced;
+        return buildingPlaced;
     }
 }
