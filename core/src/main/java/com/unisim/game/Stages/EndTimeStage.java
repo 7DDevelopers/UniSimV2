@@ -26,7 +26,8 @@ public class EndTimeStage extends Stage {
         quitButtonTS.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.exit(0);
+                game.startNewGame();
+                game.setSceneId(0);
             }
         });
         Table endTimeTable = new Table();

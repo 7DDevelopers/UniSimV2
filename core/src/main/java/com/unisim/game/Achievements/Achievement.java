@@ -11,6 +11,8 @@ public class Achievement {
     private int requiredProgress;
     private boolean continuous;
 
+    private boolean obtained;
+
     public Achievement(String name, String desc, Image thumbnail, int currentProgress, int requiredProgress, boolean continuous) {
         this.name = name;
         this.description = desc;
@@ -18,6 +20,8 @@ public class Achievement {
         this.currentProgress = currentProgress;
         this.requiredProgress = requiredProgress;
         this.continuous = continuous;
+
+        this.obtained = false; //change to load save file
     }
 
     public void setRequirements(){
@@ -50,5 +54,13 @@ public class Achievement {
 
     public boolean isContinuous() {
         return continuous;
+    }
+
+    public void setObtained(boolean obtained) {
+        this.obtained = obtained;
+    }
+
+    public boolean isObtained() {
+        return obtained;
     }
 }
