@@ -18,11 +18,14 @@ public class AchievementManager {
     private String path;
     private List<Achievement> achievements;
 
+    private int gamesFinished;
+
     public AchievementManager(String path, main game){
         this.game = game;
         this.path = path;
         File file = new File(path);
         achievements = new ArrayList<>();
+        this.gamesFinished = 0;
         if(file.exists() == false){
             try{file.createNewFile();}
             catch (IOException e){
@@ -46,7 +49,7 @@ public class AchievementManager {
             while((line = reader.readLine()) != null){
 
                 String[] row = line.split(",");
-                Achievement achievement = new Achievement(row[0], row[1], new Image(new Texture("ui/AchievementImages/" + row[2])), Integer.parseInt(row[3]), Integer.parseInt(row[4]), row[5] == "true");
+                Achievement achievement = new Achievement(row[0], row[1], new Image(new Texture("ui/AchievementImages/" + row[2])), Integer.parseInt(row[3]), Integer.parseInt(row[4]), row[5].equals("true"));
                 achievements.add(achievement);
             }
         }
@@ -82,7 +85,7 @@ public class AchievementManager {
     //Listen for achievements
     public void CheckContinuousAchievements(){
         //Prestigious
-        achievements.get(0).setCurrentProgress(5);
+        achievements.get(0).setCurrentProgress(game.mainStage.getScore());
 
         //Clubber
         int lpCount = 0;
@@ -95,20 +98,46 @@ public class AchievementManager {
         }
         achievements.get(1).setCurrentProgress(lpCount);
 
-        for(Achievement achievement : achievements){
-            if (!achievement.isContinuous()) return;
+        //Builder
+        lpCount = 0;
+        for (LandPlot landPlot : game.mainStage.getLandPlots()) {
+            if(landPlot.getBuildingPlaced() != null) {
+                lpCount++;
+            }
+        }
+        achievements.get(2).setCurrentProgress(lpCount);
 
-            if(achievement.getCurrentProgress() >= achievement.getRequiredProgress()){
-                System.out.println("Obtained: " + achievement.getName());
+        for(Achievement achievement : achievements){
+            if (achievement.isContinuous() && !achievement.isObtained()) {
+                if (achievement.getCurrentProgress() >= achievement.getRequiredProgress()) {
+                    System.out.println("Obtained: " + achievement.getName());
+                    achievement.setObtained(true);
+                }
             }
         }
     }
 
-    private void checkEndAchievements(){
+    public void checkEndAchievements(){
+        //Lecturer
+        achievements.get(3).setCurrentProgress(gamesFinished);
+
+        //Environmentalist
+        int lpCount = 0;
+        for (LandPlot landPlot : game.mainStage.getLandPlots()) {
+            if(landPlot.getBuildingPlaced() != null) {
+                lpCount++;
+            }
+        }
+        achievements.get(4).setCurrentProgress(lpCount);
+
+
         for(Achievement achievement : achievements){
-            if (achievement.isContinuous()) return;
-
-
+            if (!achievement.isContinuous() && !achievement.isObtained()) {
+                if (achievement.getCurrentProgress() >= achievement.getRequiredProgress()) {
+                    System.out.println("Obtained: " + achievement.getName());
+                    achievement.setObtained(true);
+                }
+            }
         }
     }
 
@@ -119,5 +148,13 @@ public class AchievementManager {
 
     public List<Achievement> getAchievements() {
         return achievements;
+    }
+
+    public void setGamesFinished(int gamesFinished) {
+        this.gamesFinished = gamesFinished;
+    }
+
+    public int getGamesFinished() {
+        return gamesFinished;
     }
 }

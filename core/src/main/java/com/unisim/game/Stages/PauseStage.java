@@ -33,7 +33,7 @@ public class PauseStage extends Stage {
         quitButtonPM.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.exit(0);
+                game.setSceneId(0);
             }
         });
 

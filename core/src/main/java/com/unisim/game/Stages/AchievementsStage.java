@@ -52,16 +52,28 @@ public class AchievementsStage extends Stage {
         for (int i = 0; i < game.achievementManager.getAchievements().size() && i < 5; i++) {
             Achievement achievement = game.achievementManager.getAchievements().get(i);
             //Adds the achievement image
-            achievementsTable.add(achievement.getThumbnail()).width(120).height(120).padRight(20);
+            Stack stack = new Stack();
+
+            stack.add(achievement.getThumbnail());
+
+            if(!achievement.isObtained()){
+                stack.add(new Image(new Texture("ui/AchievementImages/AchievementBackgroundGrey.png")));
+            }
+
+            achievementsTable.add(stack).width(120).height(120).padRight(20);
 
             //Adds the achievement text box
-            Stack stack = new Stack();
+            stack = new Stack();
             stack.add(new Image(new Texture("ui/AchievementImages/AchievementTextBackground.png")));
 
             Label label = new Label(achievement.getDescription(), game.skin);
             label.setAlignment(1);
             label.setFontScale(1);
             stack.add(label);
+
+            if(!achievement.isObtained()){
+                stack.add(new Image(new Texture("ui/AchievementImages/AchievementTextBackgroundGrey.png")));
+            }
 
             achievementsTable.add(stack).width(480).height(120).row();
         }
