@@ -10,13 +10,19 @@ public class ScoreManager {
     /**Contains the {@link LandPlot} for building placement on the map.*/
     private int score;
     MainStage game;
-
+    private int satisfaction;
     public ScoreManager(MainStage game){
         score = 0;
+        satisfaction = 0;
         this.game = game;
     }
 
-    public int calculateScore(){
+    public int getScore(){
+        return score;
+    }
+
+    public int getSatisfaction(){
+        satisfaction =0;
         for(int i = 0; i<9; i++){
             LandPlot landPlot = game.getLandPlots()[i];
             if (landPlot.isOccupied()){
@@ -25,41 +31,52 @@ public class ScoreManager {
 
                 switch (buildingName){
                     case "Accommodation":
-                        score += 10;
+                        satisfaction += 10;
                         for(int nearbyBuildingIndex: nearbyLandPlot(i)){
-                            System.out.println(nearbyBuildingIndex);
                             LandPlot nearbyLandplot = game.getLandPlots()[nearbyBuildingIndex];
                             if(nearbyLandplot.isOccupied()){
                                 Building nearbyBuilding = nearbyLandplot.getBuildingPlaced();
                                 String nearbyBuildingName = nearbyBuilding.getName();
                                 if (nearbyBuildingName == "FoodHall"){
-                                    score+=5;
+                                    satisfaction+=5;
                                 } else if (nearbyBuildingName == "Gym") {
-                                    score +=5;
+                                    satisfaction +=5;
                                 } else if (nearbyBuildingName == "Club") {
-                                    score+=5;
+                                    satisfaction+=5;
                                 }
                             }
                         }
                         break;
                     case "LectureHall":
-                        score+=10;
+                        boolean accommocationNearby = false;
+                        for(int nearbyBuildingIndex: nearbyLandPlot(i)){
+                            LandPlot nearbyLandplot = game.getLandPlots()[nearbyBuildingIndex];
+                            if(nearbyLandplot.isOccupied()){
+                                Building nearbyBuilding = nearbyLandplot.getBuildingPlaced();
+                                String nearbyBuildingName = nearbyBuilding.getName();
+                                if (nearbyBuildingName == "Accommodation"){
+                                    accommocationNearby = true;
+                                }
+                            }
+                        }
+                        if(accommocationNearby == true){satisfaction+=10;}
                         break;
                     case "FoodHall":
-                        score +=5;
+                        satisfaction +=5;
                         break;
                     case "Gym":
-                        score += 5;
+                        satisfaction += 5;
                         break;
                     case "Club":
-                        score +=5;
+                        satisfaction +=5;
                         break;
                     default:
                         break;
                 }
             }
         }
-        return score;
+        score += satisfaction;
+        return satisfaction;
     }
 
     public ArrayList<Integer> nearbyLandPlot(int landplotIndex){

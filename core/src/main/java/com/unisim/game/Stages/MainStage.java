@@ -58,7 +58,7 @@ public class MainStage extends Stage {
 
     public ScoreManager scoreManager;
 
-
+    public int satisfaction;
 
     /**The file paths for each different type of building.*/
     String[] filePaths;
@@ -73,8 +73,9 @@ public class MainStage extends Stage {
 
     public void oneSecondTimer(){
         eventManager.eventChecker(time);
-        score = scoreManager.calculateScore();
-        scoreTextLabel.setText(score);
+        score = scoreManager.getScore();
+        satisfaction = scoreManager.getSatisfaction();
+        scoreTextLabel.setText(satisfaction + "%");
         System.out.println(Math.ceil(time));
         if(Math.ceil(time) == 299){
             eventManager.startFreshersWeek(time);
