@@ -57,7 +57,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
     float timer = timer_t;
 
     /**The time left for game play.*/
-    float time = 10f;
+    float time = 300f;
     /**Whether the score for the current game has been saved.*/
     boolean scoreSaved = false;
     /**The background colour used for all stages.*/

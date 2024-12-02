@@ -2,6 +2,7 @@ package com.unisim.game.Stages;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -60,6 +61,8 @@ public class MainStage extends Stage {
 
     public int satisfaction;
 
+    ParticleEffect rainEffect;
+
     /**The file paths for each different type of building.*/
     String[] filePaths;
     public MainStage(main game) {
@@ -77,8 +80,10 @@ public class MainStage extends Stage {
         satisfaction = scoreManager.getSatisfaction();
         scoreTextLabel.setText(satisfaction + "%");
         System.out.println(Math.ceil(time));
-        if(Math.ceil(time) == 299){
+        double integerTime = Math.ceil(time);
+        if(integerTime == 299 || integerTime == 199 || integerTime == 99) {
             eventManager.startFreshersWeek(time);
+            eventManager.startStorm(time);
         }
     }
 
@@ -88,6 +93,11 @@ public class MainStage extends Stage {
     }
 
     public void initialize(){
+        // Load and configure particle effect
+        rainEffect = new ParticleEffect();
+        rainEffect.load(Gdx.files.internal("particles/rain.p"), Gdx.files.internal("particles"));
+        rainEffect.setPosition(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight()); // Start from the top
+        rainEffect.start();
 
         // Sets up mainStage
         eventManager = new EventManager();
@@ -244,5 +254,32 @@ public class MainStage extends Stage {
 
     public LandPlot[] getLandPlots() {
         return landPlots;
+    }
+    @Override
+    public void draw() {
+        super.draw();
+        if (eventManager.stormEvent.isActive()){
+        // Draw the rain effect
+        if (rainEffect != null) {
+            getBatch().begin();
+            rainEffect.draw(getBatch());
+            getBatch().end();
+
+            // Stop the effect if it's finished
+            if (rainEffect.isComplete()) {
+                rainEffect.dispose();
+                rainEffect = null;
+            }
+        }}
+    }
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+
+        // Update the rain effect
+        if (rainEffect != null) {
+            if (eventManager.stormEvent.isActive()){
+            rainEffect.update(delta);}
+        }
     }
 }

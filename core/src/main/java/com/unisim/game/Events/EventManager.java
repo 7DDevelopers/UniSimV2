@@ -7,10 +7,10 @@ import com.unisim.game.Events.gameEvents.Storm;
 
 public class EventManager {
 
-    FreshersWeek freshersWeekEvent;
-    Storm stormEvent;
-    ExamSeason examSeasonEvent;
-    Heatwave heatwaveEvent;
+    public FreshersWeek freshersWeekEvent;
+    public Storm stormEvent;
+    public ExamSeason examSeasonEvent;
+    public Heatwave heatwaveEvent;
 
     public EventManager(){
         freshersWeekEvent = new FreshersWeek();
@@ -76,6 +76,13 @@ public class EventManager {
             if (freshersWeekEvent.timeActivated-time >= freshersWeekEvent.duration){
                 System.out.println("Freshers week has ended");
                 freshersWeekEvent.end();
+
+            }
+        }
+        if (stormEvent.isActive()){
+            if (stormEvent.timeActivated-time >= stormEvent.duration){
+                System.out.println("Storm has ended");
+                stormEvent.end();
 
             }
         }
