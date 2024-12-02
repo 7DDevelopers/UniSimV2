@@ -163,11 +163,6 @@ public class main extends ApplicationAdapter implements InputProcessor {
                 Gdx.input.setInputProcessor(endTimeStage);
                 endTimeStage.act(Gdx.graphics.getDeltaTime());
                 endTimeStage.draw();
-                if (scoreSaved == false){
-                    saveScore();
-                    System.out.println("saving");
-                    scoreSaved = true;
-                }
                 break;
             case 5:
                 Gdx.input.setInputProcessor(leaderboardStage);
@@ -182,8 +177,8 @@ public class main extends ApplicationAdapter implements InputProcessor {
         }
     }
 
-    public void saveScore(){
-        leaderboardManager.addEntry("Luke", mainStage.getScore());
+    public void saveScore(String name){
+        leaderboardManager.addEntry(name, mainStage.getScore());
         leaderboardManager.writeLeaderBoard();
     }
 
