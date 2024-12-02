@@ -170,6 +170,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
                 leaderboardStage.draw();
                 break;
             case 6:
+                achievementStage.initialize();
                 Gdx.input.setInputProcessor(achievementStage);
                 achievementStage.act(Gdx.graphics.getDeltaTime());
                 achievementStage.draw();
@@ -180,6 +181,12 @@ public class main extends ApplicationAdapter implements InputProcessor {
     public void saveScore(String name){
         leaderboardManager.addEntry(name, mainStage.getScore());
         leaderboardManager.writeLeaderBoard();
+    }
+
+    public void startNewGame(){
+        time = 3f;
+        achievementManager.checkEndAchievements();
+        mainStage = new MainStage(this);
     }
 
     public static Building[] getBuildingTypes() {
