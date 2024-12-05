@@ -1,7 +1,7 @@
 package com.unisim.game.Stages;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.unisim.game.Achievements.Achievement;
 import com.unisim.game.Events.EventManager;
 import com.unisim.game.Leaderboard.LeaderboardManager;
@@ -66,6 +67,8 @@ public class MainStage extends Stage {
     private float animCurrentTime = 0f;
     private float xPos;
     private float animSpeed = 100;
+
+    Table eventTable;
 
     /**The file paths for each different type of building.*/
     String[] filePaths;
@@ -257,6 +260,32 @@ public class MainStage extends Stage {
             this.addActor(landPlot.getButton());
             this.addActor(landPlot);
         }
+
+        eventTable = new Table();
+
+        Table parentTable = new Table();
+        parentTable.setFillParent(false); // Allows manual positioning
+
+        Label eventTitle = new Label("Active Events", game.skin);
+        eventTitle.setFontScale(1.5f);
+        eventTitle.setAlignment(Align.center); // Center-align the title
+
+        parentTable.add(eventTitle).center().padTop(10).padBottom(10).row();
+
+        parentTable.add(eventTable).expand().fill();
+
+        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+        pixmap.setColor(0, 0, 0, 0.7f); // Black background with 70% opacity
+        pixmap.fill();
+        TextureRegionDrawable backgroundDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(pixmap)));
+        parentTable.setBackground(backgroundDrawable);
+        pixmap.dispose(); // Dispose Pixmap to prevent memory leaks
+
+        parentTable.pad(10);
+        parentTable.setSize(200, 250);
+        parentTable.setPosition(Gdx.graphics.getWidth() - 1150, Gdx.graphics.getHeight() - 270);
+
+        this.addActor(parentTable);
     }
 
     public LandPlot[] getLandPlots() {
@@ -288,6 +317,23 @@ public class MainStage extends Stage {
             if (eventManager.stormEvent.isActive()){
             rainEffect.update(delta);}
         }
+
+        // Update active events in the eventTable
+        updateEventTable();
+    }
+    private void updateEventTable() {
+        // Clear the table except for the title row
+        eventTable.clear();
+
+        // Get the active events from the EventManager
+        java.util.List<String> activeEvents = eventManager.getActiveEvents();
+
+        // Add each active event to the table
+        for (String event : activeEvents) {
+            Label eventLabel = new Label(event, game.skin);
+            eventTable.add(eventLabel).left().padTop(5).padBottom(5);
+            eventTable.row();
+        }
     }
 
     public void playAchievementAnimation(Achievement achievement){
@@ -317,7 +363,7 @@ public class MainStage extends Stage {
         achievementsTable.setPosition(xPos,
             (Gdx.graphics.getHeight() - achievementsTable.getHeight()) / 2);
 
-        achievementsTable.setZIndex(100);
+        achievementsTable.setZIndex(500);
 
         this.addActor(achievementsTable);
     }

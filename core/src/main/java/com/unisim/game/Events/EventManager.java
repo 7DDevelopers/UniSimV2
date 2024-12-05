@@ -5,6 +5,9 @@ import com.unisim.game.Events.gameEvents.FreshersWeek;
 import com.unisim.game.Events.gameEvents.Heatwave;
 import com.unisim.game.Events.gameEvents.Storm;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class EventManager {
 
     public FreshersWeek freshersWeekEvent;
@@ -86,6 +89,23 @@ public class EventManager {
 
             }
         }
+    }
+
+    public java.util.List<String> getActiveEvents(){
+        java.util.List<String> activeEvents = new ArrayList<>();
+        if (freshersWeekEvent.isActive()){
+            activeEvents.add("Freshers Week");
+        }
+        if (stormEvent.isActive()){
+            activeEvents.add(("Rain storm"));
+        }
+        if(heatwaveEvent.isActive()){
+            activeEvents.add("Heatwave");
+        }
+        if(examSeasonEvent.isActive()){
+            activeEvents.add("Exam season");
+        }
+        return  activeEvents;
     }
 
 }
