@@ -1,6 +1,5 @@
 Prestigious University,Achieve a student satisfaction of 75%,Prestigious.png,0,75,true
-Clubber,Build 3 clubs in one game,Clubber.png,0,1,true
-Builder,Place a building in every slot,Clubber.png,0,9,true
+Clubber,Build 3 clubs in one game,Clubber.png,0,3,true
+Builder,Place a building in every slot,Builder.png,0,9,true
 Lecturer,Finish 3 games,Clubber.png,0,3,false
 Environmentalist,Place no buildings,Clubber.png,0,0,false
-Environmentalist,hi,Clubber.png,0,0,false

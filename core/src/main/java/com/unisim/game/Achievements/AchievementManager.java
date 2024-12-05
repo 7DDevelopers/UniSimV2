@@ -127,6 +127,7 @@ public class AchievementManager {
                     achievement.setObtained(true);
                     recentAchievement = achievement;
                     playingAnimation = true;
+                    game.mainStage.initializeAchievementPopup(achievement);
                 }
             }
         }

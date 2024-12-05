@@ -68,7 +68,8 @@ public class MainStage extends Stage {
     private float achievementAnimTime = 3f;
     private float animCurrentTime = 0f;
     private float xPos;
-    private float animSpeed = 100;
+    private float animSpeed = 150;
+    private Table achievementsTable;
 
     Table eventTable;
 
@@ -115,7 +116,7 @@ public class MainStage extends Stage {
 
     public void initialize(){
         //Initialize achievement popup
-        xPos = Gdx.graphics.getWidth();
+        xPos = Gdx.graphics.getWidth()/2;
 
         // Load and configure particle effect
         rainEffect = new ParticleEffect();
@@ -350,19 +351,14 @@ public class MainStage extends Stage {
         }
     }
 
-    public void playAchievementAnimation(Achievement achievement){
-        animCurrentTime += Gdx.graphics.getDeltaTime();
-        if(animCurrentTime < achievementAnimTime-1){//-
-            xPos -= Gdx.graphics.getDeltaTime() * animSpeed;
-        } else if (animCurrentTime >=achievementAnimTime-1 && animCurrentTime <= achievementAnimTime) {
-            xPos = xPos;
-        }else{//+
-            xPos += Gdx.graphics.getDeltaTime() * animSpeed;
-        }
-
+    public void initializeAchievementPopup(Achievement achievement){
         // Sets up achievement
-        Table achievementsTable = new Table(game.skin);
-        achievementsTable.add(achievement.getThumbnail()).width(120).height(120);
+        xPos = Gdx.graphics.getWidth()+150;
+        animCurrentTime = 0f;
+
+        achievementsTable = new Table(game.skin);
+
+        achievementsTable.add(achievement.getThumbnail()).width(60).height(60);
 
         Stack stack = new Stack();
         stack.add(new Image(new Texture("ui/AchievementImages/AchievementTextBackground.png")));
@@ -372,13 +368,28 @@ public class MainStage extends Stage {
         label.setFontScale(1);
         stack.add(label);
 
-        achievementsTable.add(stack).width(480).height(120).row();
+        achievementsTable.add(stack).width(240).height(60);
 
         achievementsTable.setPosition(xPos,
-            (Gdx.graphics.getHeight() - achievementsTable.getHeight()) / 2);
+            Gdx.graphics.getHeight() - 30);
 
         achievementsTable.setZIndex(500);
 
         this.addActor(achievementsTable);
+    }
+
+    public void playAchievementAnimation(Achievement achievement){
+        animCurrentTime += Gdx.graphics.getDeltaTime();
+
+        if(animCurrentTime < achievementAnimTime-1){//-
+            xPos -= Gdx.graphics.getDeltaTime() * animSpeed;
+        } else if (animCurrentTime >=achievementAnimTime-1 && animCurrentTime <= achievementAnimTime) {
+            xPos = xPos;
+        }else{//+
+            xPos += Gdx.graphics.getDeltaTime() * animSpeed;
+        }
+
+        achievementsTable.setPosition(xPos,
+            Gdx.graphics.getHeight() - 60);
     }
 }
