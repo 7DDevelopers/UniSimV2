@@ -1,17 +1,16 @@
 package com.unisim.game.Stages;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.unisim.game.Achievements.Achievement;
 import com.unisim.game.Events.EventManager;
 import com.unisim.game.Leaderboard.LeaderboardManager;
 import com.unisim.game.*;
@@ -63,6 +62,11 @@ public class MainStage extends Stage {
 
     ParticleEffect rainEffect;
 
+    private float achievementAnimTime = 3f;
+    private float animCurrentTime = 0f;
+    private float xPos;
+    private float animSpeed = 100;
+
     /**The file paths for each different type of building.*/
     String[] filePaths;
     public MainStage(main game) {
@@ -93,6 +97,9 @@ public class MainStage extends Stage {
     }
 
     public void initialize(){
+        //Initialize achievement popup
+        xPos = Gdx.graphics.getWidth();
+
         // Load and configure particle effect
         rainEffect = new ParticleEffect();
         rainEffect.load(Gdx.files.internal("particles/rain.p"), Gdx.files.internal("particles"));
@@ -281,5 +288,37 @@ public class MainStage extends Stage {
             if (eventManager.stormEvent.isActive()){
             rainEffect.update(delta);}
         }
+    }
+
+    public void playAchievementAnimation(Achievement achievement){
+        animCurrentTime += Gdx.graphics.getDeltaTime();
+        if(animCurrentTime < achievementAnimTime-1){//-
+            xPos -= Gdx.graphics.getDeltaTime() * animSpeed;
+        } else if (animCurrentTime >=achievementAnimTime-1 && animCurrentTime <= achievementAnimTime) {
+            xPos = xPos;
+        }else{//+
+            xPos += Gdx.graphics.getDeltaTime() * animSpeed;
+        }
+
+        // Sets up achievement
+        Table achievementsTable = new Table(game.skin);
+        achievementsTable.add(achievement.getThumbnail()).width(120).height(120);
+
+        Stack stack = new Stack();
+        stack.add(new Image(new Texture("ui/AchievementImages/AchievementTextBackground.png")));
+
+        Label label = new Label(achievement.getDescription(), game.skin);
+        label.setAlignment(1);
+        label.setFontScale(1);
+        stack.add(label);
+
+        achievementsTable.add(stack).width(480).height(120).row();
+
+        achievementsTable.setPosition(xPos,
+            (Gdx.graphics.getHeight() - achievementsTable.getHeight()) / 2);
+
+        achievementsTable.setZIndex(100);
+
+        this.addActor(achievementsTable);
     }
 }

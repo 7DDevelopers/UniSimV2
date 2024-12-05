@@ -81,6 +81,5 @@ public class AchievementsStage extends Stage {
         this.addActor(achievementsTable);
         this.addActor(achievementsButtonTable);
 
-
     }
 }

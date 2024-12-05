@@ -125,6 +125,11 @@ public class main extends ApplicationAdapter implements InputProcessor {
 
             //Check Achievements
             achievementManager.CheckContinuousAchievements();
+
+            //Playing animation if needed
+            if (achievementManager.isPlayingAnimation()){
+                mainStage.playAchievementAnimation(achievementManager.getRecentAchievement());
+            }
         }
 
         // Render the correct scene
@@ -184,7 +189,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
     }
 
     public void startNewGame(){
-        time = 3f;
+        time = 300f;
         achievementManager.checkEndAchievements();
         mainStage = new MainStage(this);
     }

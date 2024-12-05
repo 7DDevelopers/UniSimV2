@@ -1,8 +1,16 @@
 package com.unisim.game.Achievements;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.sun.tools.javac.Main;
 import com.unisim.game.LandPlot;
 import com.unisim.game.Stages.MainStage;
@@ -20,12 +28,17 @@ public class AchievementManager {
 
     private int gamesFinished;
 
+    private boolean playingAnimation;
+    private Achievement recentAchievement;
+
     public AchievementManager(String path, main game){
         this.game = game;
         this.path = path;
         File file = new File(path);
         achievements = new ArrayList<>();
         this.gamesFinished = 0;
+        this.playingAnimation = false;
+        this.recentAchievement = null;
         if(file.exists() == false){
             try{file.createNewFile();}
             catch (IOException e){
@@ -85,7 +98,7 @@ public class AchievementManager {
     //Listen for achievements
     public void CheckContinuousAchievements(){
         //Prestigious
-        achievements.get(0).setCurrentProgress(game.mainStage.getScore());
+        achievements.get(0).setCurrentProgress(game.mainStage.scoreManager.getSatisfaction());
 
         //Clubber
         int lpCount = 0;
@@ -112,6 +125,8 @@ public class AchievementManager {
                 if (achievement.getCurrentProgress() >= achievement.getRequiredProgress()) {
                     System.out.println("Obtained: " + achievement.getName());
                     achievement.setObtained(true);
+                    recentAchievement = achievement;
+                    playingAnimation = true;
                 }
             }
         }
@@ -156,5 +171,13 @@ public class AchievementManager {
 
     public int getGamesFinished() {
         return gamesFinished;
+    }
+
+    public boolean isPlayingAnimation() {
+        return playingAnimation;
+    }
+
+    public Achievement getRecentAchievement() {
+        return recentAchievement;
     }
 }
