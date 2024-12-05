@@ -55,7 +55,7 @@ public class MainStage extends Stage {
     Label scoreTextLabel;
     float time;
 
-    EventManager eventManager;
+    public EventManager eventManager;
 
     public ScoreManager scoreManager;
 

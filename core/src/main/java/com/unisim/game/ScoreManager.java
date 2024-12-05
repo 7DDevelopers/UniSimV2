@@ -32,6 +32,7 @@ public class ScoreManager {
                 switch (buildingName){
                     case "Accommodation":
                         satisfaction += 10;
+                        satisfaction+=game.eventManager.accommodationBonus();
                         for(int nearbyBuildingIndex: nearbyLandPlot(i)){
                             LandPlot nearbyLandplot = game.getLandPlots()[nearbyBuildingIndex];
                             if(nearbyLandplot.isOccupied()){
@@ -59,16 +60,20 @@ public class ScoreManager {
                                 }
                             }
                         }
-                        if(accommocationNearby == true){satisfaction+=10;}
+                        if(accommocationNearby == true){satisfaction+=10;
+                            satisfaction+=game.eventManager.lectureHallBonus();}
                         break;
                     case "FoodHall":
                         satisfaction +=5;
+                        satisfaction+=game.eventManager.foodHallBonus();
                         break;
                     case "Gym":
                         satisfaction += 5;
+                        satisfaction+=game.eventManager.gymBonus();
                         break;
                     case "Club":
                         satisfaction +=5;
+                        satisfaction+=game.eventManager.clubBonus();
                         break;
                     default:
                         break;
