@@ -16,6 +16,8 @@ import com.unisim.game.Events.EventManager;
 import com.unisim.game.Leaderboard.LeaderboardManager;
 import com.unisim.game.*;
 
+import java.util.Random;
+
 public class MainStage extends Stage {
     private final main game;
 
@@ -90,7 +92,19 @@ public class MainStage extends Stage {
         double integerTime = Math.ceil(time);
         if(integerTime == 299 || integerTime == 199 || integerTime == 99) {
             eventManager.startFreshersWeek(time);
-            eventManager.startStorm(time);
+        }
+        if(integerTime == 250 || integerTime == 150 || integerTime == 50) {
+            eventManager.startExamSeason(time);
+        }
+        if(integerTime == 275 || integerTime == 225 || integerTime == 175|| integerTime == 125|| integerTime == 75 || integerTime == 25) {
+            Random rand = new Random();
+            int eventPicker = rand.nextInt(2);
+            if(eventPicker == 0){
+                eventManager.startStorm(time);
+            }
+            else if(eventPicker==1){
+                eventManager.startHeatwave(time);
+            }
         }
     }
 

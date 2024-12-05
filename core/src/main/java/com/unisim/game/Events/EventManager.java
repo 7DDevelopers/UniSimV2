@@ -89,6 +89,20 @@ public class EventManager {
 
             }
         }
+        if (examSeasonEvent.isActive()){
+            if (examSeasonEvent.timeActivated-time >= examSeasonEvent.duration){
+                System.out.println("Exam week has ended");
+                examSeasonEvent.end();
+
+            }
+        }
+        if (heatwaveEvent.isActive()){
+            if (heatwaveEvent.timeActivated-time >= heatwaveEvent.duration){
+                System.out.println("Heatwave has ended");
+                heatwaveEvent.end();
+
+            }
+        }
     }
 
     public java.util.List<String> getActiveEvents(){

@@ -16,12 +16,17 @@ public class Event {
     public Event(float duration){
         active = false;
         this.duration = duration;
-        setBonusScores();
+        lectureHallBonus = 0;
+        accommodationBonus = 0;
+        foodHallBonus = 0;
+        gymBonus = 0;
+        clubBonus = 0;
     }
 
     public void activate(float timeActivated){
         if (!active){
             active = true;
+            setBonusScores();
             this.timeActivated = timeActivated;
         }
     }
