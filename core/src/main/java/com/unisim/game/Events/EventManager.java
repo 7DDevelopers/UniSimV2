@@ -1,9 +1,7 @@
 package com.unisim.game.Events;
 
-import com.unisim.game.Events.gameEvents.ExamSeason;
-import com.unisim.game.Events.gameEvents.FreshersWeek;
-import com.unisim.game.Events.gameEvents.Heatwave;
-import com.unisim.game.Events.gameEvents.Storm;
+import com.unisim.game.Events.gameEvents.*;
+import com.unisim.game.Stages.MainStage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,12 +12,15 @@ public class EventManager {
     public Storm stormEvent;
     public ExamSeason examSeasonEvent;
     public Heatwave heatwaveEvent;
-
-    public EventManager(){
+    public Winter winterEvent;
+    MainStage game;
+    public EventManager(MainStage game){
         freshersWeekEvent = new FreshersWeek();
         stormEvent = new Storm();
         examSeasonEvent = new ExamSeason();
         heatwaveEvent = new Heatwave();
+        winterEvent =  new Winter();
+        this.game = game;
     }
 
     public void startExamSeason(float time){
@@ -45,6 +46,13 @@ public class EventManager {
     }
     public void endHeatwave(){
         heatwaveEvent.end();
+    }
+    public void startWinter(float time){
+        winterEvent.activate(time);
+        game.map.winterSeasonMap();
+    }
+    public void endWinter(){
+        winterEvent.end();;
     }
 
     public int lectureHallBonus(){
@@ -103,6 +111,14 @@ public class EventManager {
 
             }
         }
+        if (winterEvent.isActive()){
+            if (winterEvent.timeActivated-time >= winterEvent.duration){
+                System.out.println("winter has ended");
+                winterEvent.end();
+                game.map.defaultMap();
+
+            }
+        }
     }
 
     public java.util.List<String> getActiveEvents(){
@@ -118,6 +134,9 @@ public class EventManager {
         }
         if(examSeasonEvent.isActive()){
             activeEvents.add("Exam season");
+        }
+        if(winterEvent.isActive()){
+            activeEvents.add("Christmas");
         }
         return  activeEvents;
     }

@@ -73,6 +73,8 @@ public class MainStage extends Stage {
 
     Table eventTable;
 
+    public GameMap map;
+
     /**The file paths for each different type of building.*/
     String[] filePaths;
     public MainStage(main game) {
@@ -103,9 +105,13 @@ public class MainStage extends Stage {
             if(eventPicker == 0){
                 eventManager.startStorm(time);
             }
-            else if(eventPicker==1){
+            else if(eventPicker==1 || !(eventManager.winterEvent.isActive())){
                 eventManager.startHeatwave(time);
             }
+        }
+        if(integerTime == 260 || integerTime == 160 || integerTime == 60) {
+            eventManager.startWinter(time);
+            map.winterSeasonMap();
         }
     }
 
@@ -125,9 +131,10 @@ public class MainStage extends Stage {
         rainEffect.start();
 
         // Sets up mainStage
-        eventManager = new EventManager();
+        eventManager = new EventManager(this);
         scoreManager = new ScoreManager(this);
-        this.addActor(new GameMap());
+        map = new GameMap();
+        this.addActor(map);
 
         // Sets up labels for buildings and counter columns
         Label buildingsTitle = new Label("Buildings", game.skin);
