@@ -113,6 +113,7 @@ public class MainStage extends Stage {
             eventManager.startWinter(time);
             map.winterSeasonMap();
         }
+        scoreManager.updateScore();
     }
 
 

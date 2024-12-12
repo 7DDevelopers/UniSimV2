@@ -80,8 +80,11 @@ public class ScoreManager {
                 }
             }
         }
-        score += satisfaction;
         return satisfaction;
+    }
+    public void updateScore(){
+        score += satisfaction;
+        System.out.println(score);
     }
 
     public ArrayList<Integer> nearbyLandPlot(int landplotIndex){
