@@ -4,6 +4,7 @@ public class Storm extends Event {
     public Storm(){
         super(15);
     }
+    /** Overrides the default bonus scores of the Event class*/
     @Override
     public void setBonusScores(){
         lectureHallBonus = -2;

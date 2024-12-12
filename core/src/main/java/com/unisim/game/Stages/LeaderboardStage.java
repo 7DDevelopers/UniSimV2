@@ -27,8 +27,9 @@ public class LeaderboardStage extends Stage {
         initialize();
     }
 
+    /**Initialises the leaderboard scene*/
     public void initialize(){
-        // Sets up leaderboard stage
+        // Sets up a back button to take the user back to the menu scene
         backLeaderboard = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/BackButton.png")))));
         backLeaderboard.addListener(new ClickListener() {
             @Override
@@ -36,6 +37,8 @@ public class LeaderboardStage extends Stage {
                 game.setSceneId(0);
             }
         });
+
+        //Sets up a table to hold the leaderboard information
         Table leaderboardButtonTable = new Table();
         leaderboardButtonTable.add(backLeaderboard);
         leaderboardButtonTable.top().left();
@@ -51,6 +54,7 @@ public class LeaderboardStage extends Stage {
         leaderboardTable.setPosition((Gdx.graphics.getWidth() - leaderboardTable.getWidth()) / 2,
             (Gdx.graphics.getHeight() - leaderboardTable.getHeight()) / 2);
 
+        // Adds the information into the leaderboard table
         for (int i = 0; i < game.leaderboardManager.getLeaderboard().size() && i < 5; i++) {
             Entry entry = game.leaderboardManager.getLeaderboard().get(i);
             leaderboardTable.add(entry.getName()).padRight(20);

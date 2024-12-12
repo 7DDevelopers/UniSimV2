@@ -40,13 +40,32 @@ public class AchievementManager {
         this.playingAnimation = false;
         this.recentAchievement = null;
         if(file.exists() == false){
-            try{file.createNewFile();}
+            try{file.createNewFile();
+            writeDefaultAchievements(file);}
             catch (IOException e){
                 System.err.println("Error creating file");
             }
         }
         importAchievements();
     }
+
+    // Helper method to write default achievements to the file
+    private void writeDefaultAchievements(File file) {
+        String defaultData = """
+        Prestigious University,Achieve a student satisfaction of 75%,Prestigious.png,0,75,false
+        Clubber,Build 3 clubs in one game,Clubber.png,0,3,false
+        Builder,Place a building in every slot,Builder.png,0,9,false
+        Lecturer,Finish 3 games,Clubber.png,0,3,false
+        Environmentalist,Place no buildings,Clubber.png,0,0,false
+    """;
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            writer.write(defaultData.trim());
+        } catch (IOException e) {
+            System.err.println("Error writing default achievements to file: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     public void addAchievement(String name, String description, Image thumbnail, int currentProgress, int requiredProgress, boolean continuous){
         Achievement scoreAchievement = new Achievement(name, description, thumbnail, currentProgress, requiredProgress, continuous);
         achievements.add(scoreAchievement);

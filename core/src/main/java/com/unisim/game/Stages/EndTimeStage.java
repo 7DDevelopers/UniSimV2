@@ -21,9 +21,11 @@ public class EndTimeStage extends Stage {
         initialize();
     }
 
+    /**Initialises the End Game scene*/
     public void initialize() {
-        // Sets up the stage at the end of the game.
+        // Sets up "Time up" text
         Image endTimeText = new Image(new Texture(Gdx.files.internal("text/TimeUpText.png")));
+        // Sets up a quit button
         ImageButton quitButtonTS = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture("buttons/Quit.png"))));
         quitButtonTS.addListener(new ClickListener() {
             @Override
@@ -34,13 +36,13 @@ public class EndTimeStage extends Stage {
             }
         });
 
-        // TextField for input
-        Skin skin = new Skin(Gdx.files.internal("uiskin.json")); // Replace with the path to your skin JSON
+        // Sets up a TextField for name input
+        Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
         TextField saveTextField = new TextField("", skin);
         saveTextField.setMessageText("Enter save name...");
         saveTextField.setAlignment(Align.center);
 
-        // Save Button
+        // Sets up a save Button
         ImageButton saveButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture("buttons/Save.png"))));
         saveButton.setDisabled(true); // Initially disabled
 
@@ -58,14 +60,15 @@ public class EndTimeStage extends Stage {
             public void clicked(InputEvent event, float x, float y) {
                 if (!saveButton.isDisabled()) {
                     String saveName = saveTextField.getText().trim();
-                    saveGame(saveName); // Call your save method with the entered name
+                    // Saves the leaderboard entry and removes the input box
+                    saveGame(saveName);
                     saveTextField.remove();
                     saveButton.remove();
                 }
             }
         });
 
-        // Table Layout
+        // Positions the buttons and input boxes using a table
         Table endTimeTable = new Table();
         endTimeTable.add(endTimeText).width(700f).height(200f).row();
         endTimeTable.add(saveTextField).width(400f).height(50f).padTop(20f).row();
@@ -76,7 +79,7 @@ public class EndTimeStage extends Stage {
 
         this.addActor(endTimeTable);
     }
-
+    /** Triggers the saving of the score to the leaderboard*/
     private void saveGame(String saveName) {
         game.saveScore(saveName);
     }

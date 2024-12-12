@@ -23,9 +23,8 @@ public class TutorialStage extends Stage {
         this.game = game;
         initialize();
     }
-
+    /** Sets up the tutorial stage*/
     public void initialize(){
-
         // Sets up "back" button on tutorialStage
             backButtonTM = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/BackButton.png")))));
         backButtonTM.addListener(new ClickListener() {
