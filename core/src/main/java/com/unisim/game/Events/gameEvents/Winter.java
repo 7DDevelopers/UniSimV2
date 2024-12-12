@@ -5,6 +5,7 @@ public class Winter extends Event{
     public Winter(){
         super(15);
     }
+    /** Overrides the default bonus scores of the Event class*/
     @Override
     public void setBonusScores(){
         lectureHallBonus = 2;

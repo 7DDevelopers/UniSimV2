@@ -24,10 +24,12 @@ public class Building {
         return filepath;
     }
 
+    /**Returns the size of the building*/
     public int getSize() {
         return size;
     }
 
+    /**Returns the name of the building*/
     public String getName(){return buildingName;}
 
     /**

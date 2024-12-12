@@ -36,7 +36,6 @@ public class LandPlot extends Actor {
     public Image getImage() {
         return image;
     }
-
     Button button;
     Image image;
     Skin skin;
@@ -93,7 +92,6 @@ public class LandPlot extends Actor {
 
     @Override
     public void act(float delta) {
-
         super.act(delta);
 
         // If the LandPlot doesn't contain a building, and a building has been selected for placement.

@@ -22,7 +22,6 @@ public class main extends ApplicationAdapter implements InputProcessor {
     /**Represents the current scene.*/
     int sceneId = 0;
 
-    // Stages that represent different parts of the game
     public Skin skin;
     /**The stage for the menu displayed at the start of the game.*/
     MenuStage menuStage;
@@ -53,6 +52,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
         new Building("Club.png", 2, "Club")
     };
 
+    /**Floats used to calculate a one-second timer*/
     float timer_t = 1;
     float timer = timer_t;
 
@@ -75,6 +75,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
     public void create() {
         // Sets up skin for labels on mainStage
         skin = new Skin(Gdx.files.internal("default_skin/uiskin.json"));
+
         // Variables to change size of camera.
         float w = 1260;
         float h = 640;
@@ -89,13 +90,13 @@ public class main extends ApplicationAdapter implements InputProcessor {
         mainColour = new Color(0f, 0.23f, 0.17f, 1f);
         backgroundColourSR = new ShapeRenderer();
 
-
         // Sets up leaderboard manager
         leaderboardManager = new LeaderboardManager("leaderboard.csv");
 
         //Sets up achievement manager
         achievementManager = new AchievementManager("achievements.csv", this);
 
+        // Sets up each game stage
         menuStage = new MenuStage(this);
         mainStage = new MainStage(this);
         pauseStage = new PauseStage(this);
@@ -105,11 +106,9 @@ public class main extends ApplicationAdapter implements InputProcessor {
         endTimeStage = new EndTimeStage(this);
     }
 
-    public boolean isScoreSaved() {
-        return scoreSaved;
-    }
     @Override
     public void render() {
+        // Clears the screen
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Update the timer only in the main stage (gameplay)
@@ -126,7 +125,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
             //Check Achievements
             achievementManager.CheckContinuousAchievements();
 
-            //Playing animation if needed
+            //Play animation if needed
             if (achievementManager.isPlayingAnimation()){
                 mainStage.playAchievementAnimation(achievementManager.getRecentAchievement());
             }
@@ -135,11 +134,13 @@ public class main extends ApplicationAdapter implements InputProcessor {
         // Render the correct scene
         switch (sceneId) {
             case 0:
+                // Menu scene
                 Gdx.input.setInputProcessor(menuStage);
                 menuStage.act(Gdx.graphics.getDeltaTime());
                 menuStage.draw();
                 break;
             case 1:
+                // Main game scene
                 Gdx.input.setInputProcessor(mainStage);
                 mainStage.act(Gdx.graphics.getDeltaTime());
                 mainStage.draw();
@@ -147,6 +148,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
                 if(timer > 0) {
                     timer -= Gdx.graphics.getDeltaTime();;
                 } else {
+                    // Triggers a function once per second
                     mainStage.oneSecondTimer();
                     timer = timer_t;
                 }
@@ -155,26 +157,31 @@ public class main extends ApplicationAdapter implements InputProcessor {
                 }
                 break;
             case 2:
+                // Paused game stage
                 Gdx.input.setInputProcessor(pauseStage);
                 pauseStage.act(Gdx.graphics.getDeltaTime());
                 pauseStage.draw();
                 break;
             case 3:
+                // Tutorial stage
                 Gdx.input.setInputProcessor(tutorialStage);
                 tutorialStage.act(Gdx.graphics.getDeltaTime());
                 tutorialStage.draw();
                 break;
             case 4:
+                // End of the game scene
                 Gdx.input.setInputProcessor(endTimeStage);
                 endTimeStage.act(Gdx.graphics.getDeltaTime());
                 endTimeStage.draw();
                 break;
             case 5:
+                // Leaderboard scene
                 Gdx.input.setInputProcessor(leaderboardStage);
                 leaderboardStage.act(Gdx.graphics.getDeltaTime());
                 leaderboardStage.draw();
                 break;
             case 6:
+                // Achievement scene
                 achievementStage.initialize();
                 Gdx.input.setInputProcessor(achievementStage);
                 achievementStage.act(Gdx.graphics.getDeltaTime());
@@ -182,32 +189,24 @@ public class main extends ApplicationAdapter implements InputProcessor {
                 break;
         }
     }
-
+    /**Saves the current game score to the leaderboard*/
     public void saveScore(String name){
         leaderboardManager.addEntry(name, mainStage.getScore());
         leaderboardManager.writeLeaderBoard();
     }
-
+    /**Allows the game to reset betweek games*/
     public void startNewGame(){
         time = 300f;
         achievementManager.checkEndAchievements();
         mainStage = new MainStage(this);
     }
-
+    /**Passes the list of possible buildings*/
     public static Building[] getBuildingTypes() {
         return buildingTypes;
     }
-
+    /**Changes the current scene*/
     public void setSceneId(int sceneId) {
         this.sceneId = sceneId;
-    }
-
-    public Skin getSkin() {
-        return skin;
-    }
-
-    public int getSceneId() {
-        return sceneId;
     }
 
     @Override
