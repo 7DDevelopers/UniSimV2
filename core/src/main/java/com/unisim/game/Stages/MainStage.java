@@ -1,19 +1,22 @@
 package com.unisim.game.Stages;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
+import com.unisim.game.Achievements.Achievement;
 import com.unisim.game.Events.EventManager;
 import com.unisim.game.Leaderboard.LeaderboardManager;
 import com.unisim.game.*;
+
+import java.util.Random;
 
 public class MainStage extends Stage {
     private final main game;
@@ -54,11 +57,23 @@ public class MainStage extends Stage {
     Label scoreTextLabel;
     float time;
 
-    EventManager eventManager;
+    public EventManager eventManager;
 
     public ScoreManager scoreManager;
 
+    public int satisfaction;
 
+    ParticleEffect rainEffect;
+
+    private float achievementAnimTime = 3f;
+    private float animCurrentTime = 0f;
+    private float xPos;
+    private float animSpeed = 150;
+    private Table achievementsTable;
+
+    Table eventTable;
+
+    public GameMap map;
 
     /**The file paths for each different type of building.*/
     String[] filePaths;
@@ -73,12 +88,32 @@ public class MainStage extends Stage {
 
     public void oneSecondTimer(){
         eventManager.eventChecker(time);
-        score = scoreManager.calculateScore();
-        scoreTextLabel.setText(score);
+        score = scoreManager.getScore();
+        satisfaction = scoreManager.getSatisfaction();
+        scoreTextLabel.setText(satisfaction + "%");
         System.out.println(Math.ceil(time));
-        if(Math.ceil(time) == 299){
+        double integerTime = Math.ceil(time);
+        if(integerTime == 299 || integerTime == 199 || integerTime == 99) {
             eventManager.startFreshersWeek(time);
         }
+        if(integerTime == 250 || integerTime == 150 || integerTime == 50) {
+            eventManager.startExamSeason(time);
+        }
+        if(integerTime == 275 || integerTime == 225 || integerTime == 175|| integerTime == 125|| integerTime == 75 || integerTime == 25) {
+            Random rand = new Random();
+            int eventPicker = rand.nextInt(2);
+            if(eventPicker == 0){
+                eventManager.startStorm(time);
+            }
+            else if(eventPicker==1 || !(eventManager.winterEvent.isActive())){
+                eventManager.startHeatwave(time);
+            }
+        }
+        if(integerTime == 260 || integerTime == 160 || integerTime == 60) {
+            eventManager.startWinter(time);
+            map.winterSeasonMap();
+        }
+        scoreManager.updateScore();
     }
 
 
@@ -87,11 +122,20 @@ public class MainStage extends Stage {
     }
 
     public void initialize(){
+        //Initialize achievement popup
+        xPos = Gdx.graphics.getWidth()/2;
+
+        // Load and configure particle effect
+        rainEffect = new ParticleEffect();
+        rainEffect.load(Gdx.files.internal("particles/rain.p"), Gdx.files.internal("particles"));
+        rainEffect.setPosition(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight()); // Start from the top
+        rainEffect.start();
 
         // Sets up mainStage
-        eventManager = new EventManager();
+        eventManager = new EventManager(this);
         scoreManager = new ScoreManager(this);
-        this.addActor(new GameMap());
+        map = new GameMap();
+        this.addActor(map);
 
         // Sets up labels for buildings and counter columns
         Label buildingsTitle = new Label("Buildings", game.skin);
@@ -239,9 +283,121 @@ public class MainStage extends Stage {
             this.addActor(landPlot.getButton());
             this.addActor(landPlot);
         }
+
+        eventTable = new Table();
+
+        Table parentTable = new Table();
+        parentTable.setFillParent(false); // Allows manual positioning
+
+        Label eventTitle = new Label("Active Events", game.skin);
+        eventTitle.setFontScale(1.5f);
+        eventTitle.setAlignment(Align.center); // Center-align the title
+
+        parentTable.add(eventTitle).center().padTop(10).padBottom(10).row();
+
+        parentTable.add(eventTable).expand().fill();
+
+        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+        pixmap.setColor(0, 0, 0, 0.7f); // Black background with 70% opacity
+        pixmap.fill();
+        TextureRegionDrawable backgroundDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(pixmap)));
+        parentTable.setBackground(backgroundDrawable);
+        pixmap.dispose(); // Dispose Pixmap to prevent memory leaks
+
+        parentTable.pad(10);
+        parentTable.setSize(200, 250);
+        parentTable.setPosition(Gdx.graphics.getWidth() - 1150, Gdx.graphics.getHeight() - 270);
+
+        this.addActor(parentTable);
     }
 
     public LandPlot[] getLandPlots() {
         return landPlots;
+    }
+    @Override
+    public void draw() {
+        super.draw();
+        if (eventManager.stormEvent.isActive()){
+        // Draw the rain effect
+        if (rainEffect != null) {
+            getBatch().begin();
+            rainEffect.draw(getBatch());
+            getBatch().end();
+
+            // Stop the effect if it's finished
+            if (rainEffect.isComplete()) {
+                rainEffect.dispose();
+                rainEffect = null;
+            }
+        }}
+    }
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+
+        // Update the rain effect
+        if (rainEffect != null) {
+            if (eventManager.stormEvent.isActive()){
+            rainEffect.update(delta);}
+        }
+
+        // Update active events in the eventTable
+        updateEventTable();
+    }
+    private void updateEventTable() {
+        // Clear the table except for the title row
+        eventTable.clear();
+
+        // Get the active events from the EventManager
+        java.util.List<String> activeEvents = eventManager.getActiveEvents();
+
+        // Add each active event to the table
+        for (String event : activeEvents) {
+            Label eventLabel = new Label(event, game.skin);
+            eventTable.add(eventLabel).left().padTop(5).padBottom(5);
+            eventTable.row();
+        }
+    }
+
+    public void initializeAchievementPopup(Achievement achievement){
+        // Sets up achievement
+        xPos = Gdx.graphics.getWidth()+150;
+        animCurrentTime = 0f;
+
+        achievementsTable = new Table(game.skin);
+
+        achievementsTable.add(achievement.getThumbnail()).width(60).height(60);
+
+        Stack stack = new Stack();
+        stack.add(new Image(new Texture("ui/AchievementImages/AchievementTextBackground.png")));
+
+        Label label = new Label(achievement.getDescription(), game.skin);
+        label.setAlignment(1);
+        label.setFontScale(1);
+        stack.add(label);
+
+        achievementsTable.add(stack).width(240).height(60);
+
+        achievementsTable.setPosition(xPos,
+            Gdx.graphics.getHeight() - 30);
+
+        achievementsTable.setZIndex(500);
+
+        this.addActor(achievementsTable);
+    }
+
+    public void playAchievementAnimation(Achievement achievement){
+        animCurrentTime += Gdx.graphics.getDeltaTime();
+
+        if(animCurrentTime < achievementAnimTime-1){//-
+            xPos -= Gdx.graphics.getDeltaTime() * animSpeed;
+        } else if (animCurrentTime >=achievementAnimTime-1 && animCurrentTime <= achievementAnimTime) {
+            xPos = xPos;
+        }else{//+
+            xPos += Gdx.graphics.getDeltaTime() * animSpeed;
+        }
+
+        achievementsTable.setPosition(xPos,
+            Gdx.graphics.getHeight() - 60);
     }
 }

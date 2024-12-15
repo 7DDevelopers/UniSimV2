@@ -22,19 +22,13 @@ public class PauseStage extends Stage {
         this.game = game;
         initialize();
     }
-
+    /** Sets up the pause stage*/
     public void initialize(){
-        // Sets up pauseStage.
-
-
-
         // Sets up the "quit" button on pauseStage allowing the user to exit the application.
         ImageButton quitButtonPM = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/Quit.png")))));
         quitButtonPM.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //System.exit(0);
-                //Returns to main menu
                 game.setSceneId(0);
             }
         });

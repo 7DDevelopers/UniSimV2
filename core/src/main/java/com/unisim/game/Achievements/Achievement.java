@@ -20,8 +20,7 @@ public class Achievement {
         this.currentProgress = currentProgress;
         this.requiredProgress = requiredProgress;
         this.continuous = continuous;
-
-        this.obtained = false; //change to load save file
+        this.obtained = false;
     }
 
     public void setRequirements(){
@@ -56,11 +55,11 @@ public class Achievement {
         return continuous;
     }
 
-    public void setObtained(boolean obtained) {
-        this.obtained = obtained;
-    }
-
     public boolean isObtained() {
         return obtained;
+    }
+
+    public void setObtained(boolean obtained) {
+        this.obtained = obtained;
     }
 }

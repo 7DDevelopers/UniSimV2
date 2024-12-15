@@ -1,8 +1,16 @@
 package com.unisim.game.Achievements;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.sun.tools.javac.Main;
 import com.unisim.game.LandPlot;
 import com.unisim.game.Stages.MainStage;
@@ -18,23 +26,46 @@ public class AchievementManager {
     private String path;
     private List<Achievement> achievements;
 
-    private int gamesCompleted;
+    private int gamesFinished;
+
+    private boolean playingAnimation;
+    private Achievement recentAchievement;
 
     public AchievementManager(String path, main game){
         this.game = game;
         this.path = path;
-        this.gamesCompleted = 0;
-
         File file = new File(path);
         achievements = new ArrayList<>();
+        this.gamesFinished = 0;
+        this.playingAnimation = false;
+        this.recentAchievement = null;
         if(file.exists() == false){
-            try{file.createNewFile();}
+            try{file.createNewFile();
+            writeDefaultAchievements(file);}
             catch (IOException e){
                 System.err.println("Error creating file");
             }
         }
         importAchievements();
     }
+
+    // Helper method to write default achievements to the file
+    private void writeDefaultAchievements(File file) {
+        String defaultData = """
+        Prestigious University,Achieve a student satisfaction of 75%,Prestigious.png,0,75,false
+        Clubber,Build 3 clubs in one game,Clubber.png,0,3,false
+        Builder,Place a building in every slot,Builder.png,0,9,false
+        Lecturer,Finish 3 games,Clubber.png,0,3,false
+        Environmentalist,Place no buildings,Clubber.png,0,0,false
+    """;
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            writer.write(defaultData.trim());
+        } catch (IOException e) {
+            System.err.println("Error writing default achievements to file: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     public void addAchievement(String name, String description, Image thumbnail, int currentProgress, int requiredProgress, boolean continuous){
         Achievement scoreAchievement = new Achievement(name, description, thumbnail, currentProgress, requiredProgress, continuous);
         achievements.add(scoreAchievement);
@@ -86,7 +117,7 @@ public class AchievementManager {
     //Listen for achievements
     public void CheckContinuousAchievements(){
         //Prestigious
-        achievements.get(0).setCurrentProgress(game.mainStage.getScore());
+        achievements.get(0).setCurrentProgress(game.mainStage.scoreManager.getSatisfaction());
 
         //Clubber
         int lpCount = 0;
@@ -113,6 +144,9 @@ public class AchievementManager {
                 if (achievement.getCurrentProgress() >= achievement.getRequiredProgress()) {
                     System.out.println("Obtained: " + achievement.getName());
                     achievement.setObtained(true);
+                    recentAchievement = achievement;
+                    playingAnimation = true;
+                    game.mainStage.initializeAchievementPopup(achievement);
                 }
             }
         }
@@ -120,7 +154,7 @@ public class AchievementManager {
 
     public void checkEndAchievements(){
         //Lecturer
-        achievements.get(3).setCurrentProgress(gamesCompleted);
+        achievements.get(3).setCurrentProgress(gamesFinished);
 
         //Environmentalist
         int lpCount = 0;
@@ -130,6 +164,7 @@ public class AchievementManager {
             }
         }
         achievements.get(4).setCurrentProgress(lpCount);
+
 
         for(Achievement achievement : achievements){
             if (!achievement.isContinuous() && !achievement.isObtained()) {
@@ -150,11 +185,19 @@ public class AchievementManager {
         return achievements;
     }
 
-    public void setGamesCompleted(int gamesCompleted) {
-        this.gamesCompleted = gamesCompleted;
+    public void setGamesFinished(int gamesFinished) {
+        this.gamesFinished = gamesFinished;
     }
 
-    public int getGamesCompleted() {
-        return gamesCompleted;
+    public int getGamesFinished() {
+        return gamesFinished;
+    }
+
+    public boolean isPlayingAnimation() {
+        return playingAnimation;
+    }
+
+    public Achievement getRecentAchievement() {
+        return recentAchievement;
     }
 }

@@ -10,58 +10,91 @@ public class ScoreManager {
     /**Contains the {@link LandPlot} for building placement on the map.*/
     private int score;
     MainStage game;
-
+    private int satisfaction;
     public ScoreManager(MainStage game){
         score = 0;
+        satisfaction = 0;
         this.game = game;
     }
 
-    public int calculateScore(){
+    /**Returns an integer representing the score of the current game*/
+    public int getScore(){
+        return score;
+    }
+
+    /**Calculates the overall satisfaction based on building positions and events*/
+    public int getSatisfaction(){
+        satisfaction =0;
+        // Iterates through each landplot
         for(int i = 0; i<9; i++){
             LandPlot landPlot = game.getLandPlots()[i];
+            // Continues only if the current landplot is occupied
             if (landPlot.isOccupied()){
                 Building buildingOnLandplot = landPlot.getBuildingPlaced();
                 String buildingName = buildingOnLandplot.getName();
-
+                // Uses selection based on the building name
                 switch (buildingName){
                     case "Accommodation":
-                        score += 10;
+                        satisfaction += 10;
+                        satisfaction+=game.eventManager.accommodationBonus();
                         for(int nearbyBuildingIndex: nearbyLandPlot(i)){
-                            System.out.println(nearbyBuildingIndex);
                             LandPlot nearbyLandplot = game.getLandPlots()[nearbyBuildingIndex];
+                            // Checks all nearby landplots to give bonus points if any of the nearby buildings
+                            // are a food hall, gym, or club
                             if(nearbyLandplot.isOccupied()){
                                 Building nearbyBuilding = nearbyLandplot.getBuildingPlaced();
                                 String nearbyBuildingName = nearbyBuilding.getName();
                                 if (nearbyBuildingName == "FoodHall"){
-                                    score+=5;
+                                    satisfaction+=5;
                                 } else if (nearbyBuildingName == "Gym") {
-                                    score +=5;
+                                    satisfaction +=5;
                                 } else if (nearbyBuildingName == "Club") {
-                                    score+=5;
+                                    satisfaction+=5;
                                 }
                             }
                         }
                         break;
                     case "LectureHall":
-                        score+=10;
+                        boolean accommocationNearby = false;
+                        for(int nearbyBuildingIndex: nearbyLandPlot(i)){
+                            LandPlot nearbyLandplot = game.getLandPlots()[nearbyBuildingIndex];
+                            if(nearbyLandplot.isOccupied()){
+                                // Checks all nearby buildings, only scoring points of there is accommodation nearby
+                                Building nearbyBuilding = nearbyLandplot.getBuildingPlaced();
+                                String nearbyBuildingName = nearbyBuilding.getName();
+                                if (nearbyBuildingName == "Accommodation"){
+                                    accommocationNearby = true;
+                                }
+                            }
+                        }
+                        if(accommocationNearby == true){satisfaction+=10;
+                            satisfaction+=game.eventManager.lectureHallBonus();}
                         break;
                     case "FoodHall":
-                        score +=5;
+                        satisfaction +=5;
+                        satisfaction+=game.eventManager.foodHallBonus();
                         break;
                     case "Gym":
-                        score += 5;
+                        satisfaction += 5;
+                        satisfaction+=game.eventManager.gymBonus();
                         break;
                     case "Club":
-                        score +=5;
+                        satisfaction +=5;
+                        satisfaction+=game.eventManager.clubBonus();
                         break;
                     default:
                         break;
                 }
             }
         }
-        return score;
+        return satisfaction;
+    }
+    public void updateScore(){
+        // Score is saved as the total of the satisfaction over the 5 minutes
+        score += satisfaction;
     }
 
+    /**Uses a matrix to return the landplot numbers of nearby landplots of the given landplot*/
     public ArrayList<Integer> nearbyLandPlot(int landplotIndex){
         return switch (landplotIndex) {
             case 0, 3 -> new ArrayList<>(Arrays.asList(1, 2));

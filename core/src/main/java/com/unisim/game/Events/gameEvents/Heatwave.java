@@ -6,6 +6,7 @@ public class Heatwave extends Event {
         super(15);
     }
 
+    /** Overrides the default bonus scores of the Event class*/
     @Override
     public void setBonusScores(){
         lectureHallBonus = 5;

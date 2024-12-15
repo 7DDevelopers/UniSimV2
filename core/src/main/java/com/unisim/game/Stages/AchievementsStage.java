@@ -55,6 +55,7 @@ public class AchievementsStage extends Stage {
             Stack stack = new Stack();
 
             stack.add(achievement.getThumbnail());
+
             if(!achievement.isObtained()){
                 stack.add(new Image(new Texture("ui/AchievementImages/AchievementBackgroundGrey.png")));
             }
@@ -79,7 +80,6 @@ public class AchievementsStage extends Stage {
 
         this.addActor(achievementsTable);
         this.addActor(achievementsButtonTable);
-
 
     }
 }
