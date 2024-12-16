@@ -400,4 +400,8 @@ public class MainStage extends Stage {
         achievementsTable.setPosition(xPos,
             Gdx.graphics.getHeight() - 60);
     }
+
+    public GameMap getGameMap(){
+        return map;
+    }
 }

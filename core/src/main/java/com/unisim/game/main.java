@@ -208,6 +208,22 @@ public class main extends ApplicationAdapter implements InputProcessor {
     public void setSceneId(int sceneId) {
         this.sceneId = sceneId;
     }
+    @Override
+    public void resize(int width, int height) {
+
+
+        // Notify all stages of the new size
+        menuStage.getViewport().update(width, height, true);
+        mainStage.getViewport().update(width, height, true);
+        pauseStage.getViewport().update(width, height, true);
+        tutorialStage.getViewport().update(width, height, true);
+        endTimeStage.getViewport().update(width, height, true);
+        leaderboardStage.getViewport().update(width, height, true);
+        achievementStage.getViewport().update(width, height, true);
+
+
+    }
+
 
     @Override
     public void dispose() {
@@ -258,4 +274,5 @@ public class main extends ApplicationAdapter implements InputProcessor {
     public boolean scrolled(float v, float v1) {
         return false;
     }
+
 }
