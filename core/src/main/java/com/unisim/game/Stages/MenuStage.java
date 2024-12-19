@@ -32,7 +32,7 @@ public class MenuStage extends Stage {
     private void initialize(){
 
         // Sets up "play" button on menuStage.
-        playImgButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/PlayButton.png")))));
+        playImgButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/PlayButtonNew.png")))));
         playImgButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -42,7 +42,7 @@ public class MenuStage extends Stage {
 
         // Sets up "leaderboard" button on menuStage.
 
-        leaderboardImgButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/Leaderboard.png")))));
+        leaderboardImgButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/LeaderboardNew.png")))));
         leaderboardImgButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -52,7 +52,7 @@ public class MenuStage extends Stage {
 
         // Sets up "acheivements" button on menuStage.
 
-        achievementsImgButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/Achievements.png")))));
+        achievementsImgButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/AchievementsNew.png")))));
         achievementsImgButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

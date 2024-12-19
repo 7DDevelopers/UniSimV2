@@ -15,35 +15,70 @@ import com.unisim.game.main;
 public class TutorialStage extends Stage {
     private final main game;
 
+    // Buttons
+    private ImageButton backButtonTM;
+    private ImageButton eventsHelpButton;
 
-    /**Takes the player to {@code mainStage} from {@code tutorialStage}.*/
-    ImageButton backButtonTM;
+    // Image displayed for tutorial
+    private Image tutorialMenuText;
+
+    // State tracking
+    private boolean showingHowToPlay2 = false;
 
     public TutorialStage(main game) {
         this.game = game;
         initialize();
     }
-    /** Sets up the tutorial stage*/
-    public void initialize(){
-        // Sets up "back" button on tutorialStage
-            backButtonTM = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/BackButton.png")))));
+
+    /** Sets up the tutorial stage */
+    public void initialize() {
+        // Sets up "Back" button on tutorialStage
+        backButtonTM = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/BackNew.png")))));
         backButtonTM.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setSceneId(1);
+                if (showingHowToPlay2) {
+                    tutorialMenuText.setDrawable(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("text/HowToPlay.png")))));
+                    eventsHelpButton.setVisible(true);
+                    showingHowToPlay2 = false;
+                } else {
+                    game.setSceneId(1);
+                }
             }
         });
 
-        // Formats and adds button and text to tutorialStage.
-        backButtonTM.setPosition(Gdx.graphics.getWidth() / 2f - backButtonTM.getWidth() / 2,
-            Gdx.graphics.getHeight() / 2f - backButtonTM.getHeight() / 2);
-        Image tutorialMenuText = new Image(new Texture(Gdx.files.internal("text/HowToPlay.png")));
+        // Sets up "Events" button on tutorialStage
+        eventsHelpButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/EventsNew.png")))));
+        eventsHelpButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                tutorialMenuText.setDrawable(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("text/HowToPlay2.png")))));
+                eventsHelpButton.setVisible(false);
+                showingHowToPlay2 = true;
+            }
+        });
+
+        // Sets up tutorial text image
+        tutorialMenuText = new Image(new Texture(Gdx.files.internal("text/HowToPlay.png")));
+
+        // Format and add buttons and text to the tutorial stage
         Table tutorialMenuTable = new Table();
         tutorialMenuTable.add(tutorialMenuText).width(1200f).height(700f);
         tutorialMenuTable.row();
-        tutorialMenuTable.add(backButtonTM);
-        tutorialMenuTable.setPosition(Gdx.graphics.getWidth() / 2f - tutorialMenuTable.getWidth() / 2,
-            Gdx.graphics.getHeight()/2f - tutorialMenuTable.getHeight() / 2);
+
+        // Add buttons in a sub-table for alignment
+        Table buttonTable = new Table();
+        buttonTable.add(backButtonTM).pad(10f);
+        buttonTable.add(eventsHelpButton).pad(10f);
+
+        tutorialMenuTable.add(buttonTable);
+
+        // Center the table on the screen
+        tutorialMenuTable.setPosition(
+            Gdx.graphics.getWidth() / 2f - tutorialMenuTable.getWidth() / 2,
+            Gdx.graphics.getHeight() / 2f - tutorialMenuTable.getHeight() / 2
+        );
+
         this.addActor(tutorialMenuTable);
     }
 }

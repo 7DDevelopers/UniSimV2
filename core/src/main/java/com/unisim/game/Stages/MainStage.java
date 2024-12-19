@@ -65,7 +65,7 @@ public class MainStage extends Stage {
 
     ParticleEffect rainEffect;
 
-    private float achievementAnimTime = 3f;
+    final float achievementAnimTime = 3f;
     private float animCurrentTime = 0f;
     private float xPos;
     private float animSpeed = 150;
@@ -224,8 +224,8 @@ public class MainStage extends Stage {
         timerTable.add(timeTextLabel);
 
         // Sets up pause and tutorial buttons.
-        pauseButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/PauseSquareButton.png")))));
-        tutorialButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/QuestionMark.png")))));
+        pauseButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/PauseNew.png")))));
+        tutorialButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/HelpNew.png")))));
         // Sets up listeners for the buttons, so the player can navigate between stages.
         pauseButton.addListener(new ClickListener() {
             @Override
@@ -245,7 +245,7 @@ public class MainStage extends Stage {
         // Formats mainStage
 
         miscTable = new Table();
-        miscTable.add(pauseButton);
+        miscTable.add(pauseButton).padLeft(50f);
         miscTable.add(tutorialButton);
         miscTable.row();
         miscTable.add(scoreTable);
