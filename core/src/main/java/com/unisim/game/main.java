@@ -20,7 +20,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
     }
 
     /**Represents the current scene.*/
-    int sceneId = 0;
+    public int sceneId = 0;
 
     public Skin skin;
     /**The stage for the menu displayed at the start of the game.*/

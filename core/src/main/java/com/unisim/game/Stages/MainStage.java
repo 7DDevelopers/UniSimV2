@@ -238,7 +238,7 @@ public class MainStage extends Stage {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // Moves player to tutorialStage.
-                game.setSceneId(3);
+                pressedHelpButton();
             }
         });
 
@@ -403,5 +403,9 @@ public class MainStage extends Stage {
 
     public GameMap getGameMap(){
         return map;
+    }
+
+    public void pressedHelpButton() {
+        game.setSceneId(3);
     }
 }
