@@ -4,7 +4,6 @@ import com.unisim.game.Events.gameEvents.*;
 import com.unisim.game.Stages.MainStage;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class EventManager {
 

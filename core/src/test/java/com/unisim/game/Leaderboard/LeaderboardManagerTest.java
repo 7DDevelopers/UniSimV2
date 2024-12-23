@@ -3,7 +3,6 @@ package com.unisim.game.Leaderboard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.*;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,9 +29,6 @@ class LeaderboardManagerTest {
     }
 
     private boolean entryEqual(Entry entry1, Entry entry2){
-        if(entry1.getName() == entry2.getName() && entry1.getScore() == entry2.getScore()){
-            return true;
-        }
-        return false;
+        return entry1.getName() == entry2.getName() && entry1.getScore() == entry2.getScore();
     }
 }

@@ -2,7 +2,6 @@ package com.unisim.game.Events;
 
 import com.unisim.game.GameMap;
 import com.unisim.game.Stages.MainStage;
-import com.unisim.game.main;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
