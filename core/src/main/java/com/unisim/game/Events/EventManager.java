@@ -48,27 +48,27 @@ public class EventManager {
     /**Methods that calculate the score bonus for each building based on current events*/
     public int lectureHallBonus(){
         int bonusPoints = examSeasonEvent.getLectureHallBonus() + freshersWeekEvent.getLectureHallBonus() +
-            heatwaveEvent.getLectureHallBonus() + stormEvent.getLectureHallBonus();
+            heatwaveEvent.getLectureHallBonus() + stormEvent.getLectureHallBonus() + winterEvent.getLectureHallBonus();
         return bonusPoints;
     }
     public int foodHallBonus(){
         int bonusPoints = examSeasonEvent.getFoodHallBonus() + freshersWeekEvent.getFoodHallBonus()  +
-            heatwaveEvent.getFoodHallBonus()  + stormEvent.getFoodHallBonus() ;
+            heatwaveEvent.getFoodHallBonus()  + stormEvent.getFoodHallBonus() + winterEvent.getFoodHallBonus();
         return bonusPoints;
     }
     public int gymBonus(){
         int bonusPoints = examSeasonEvent.getGymBonus() + freshersWeekEvent.getGymBonus()  +
-            heatwaveEvent.getGymBonus()  + stormEvent.getGymBonus() ;
+            heatwaveEvent.getGymBonus()  + stormEvent.getGymBonus() + winterEvent.getGymBonus();
         return bonusPoints;
     }
     public int accommodationBonus(){
         int bonusPoints = examSeasonEvent.getAccommodationBonus() + freshersWeekEvent.getAccommodationBonus()  +
-            heatwaveEvent.getAccommodationBonus()  + stormEvent.getAccommodationBonus() ;
+            heatwaveEvent.getAccommodationBonus()  + stormEvent.getAccommodationBonus() + winterEvent.getAccommodationBonus();
         return bonusPoints;
     }
     public int clubBonus(){
         int bonusPoints = examSeasonEvent.getClubBonus() + freshersWeekEvent.getClubBonus()  +
-            heatwaveEvent.getClubBonus()  + stormEvent.getClubBonus() ;
+            heatwaveEvent.getClubBonus()  + stormEvent.getClubBonus() + winterEvent.getClubBonus();
         return bonusPoints;
     }
 
