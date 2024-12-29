@@ -25,7 +25,7 @@ public class PauseStage extends Stage {
     /** Sets up the pause stage*/
     public void initialize(){
         // Sets up the "quit" button on pauseStage allowing the user to exit the application.
-        ImageButton quitButtonPM = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/Quit.png")))));
+        ImageButton quitButtonPM = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/QuitNew.png")))));
         quitButtonPM.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -34,7 +34,7 @@ public class PauseStage extends Stage {
         });
 
         // Sets up the "resume" button on pauseStage allowing user to continue playing the game.
-        playButtonPM = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/ResumeButton.png")))));
+        playButtonPM = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/ResumeNew.png")))));
         playButtonPM.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

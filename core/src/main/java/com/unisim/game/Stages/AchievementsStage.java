@@ -27,7 +27,7 @@ public class AchievementsStage extends Stage {
 
     public void initialize(){
         // Sets up achievements stage
-        backAchievements = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/BackButton.png")))));
+        backAchievements = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/BackNew.png")))));
         backAchievements.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

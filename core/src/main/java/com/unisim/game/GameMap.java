@@ -13,25 +13,22 @@ import com.unisim.game.Stages.MainStage;
  * Represents a tiled map, and handles its rendering.
  */
 public class GameMap extends Actor {
-
     TiledMap tiledMap;
     TiledMap winterMap;
     TiledMapRenderer tiledMapRenderer;
+    MainStage game;
 
     public GameMap() {
         tiledMap = new TmxMapLoader().load("TEAM5ENG1map.tmx");
         winterMap = new TmxMapLoader().load("WINTERmap.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
     }
-    /**Allows the map to be changed to the alternate winter map*/
     public void winterSeasonMap(){
         tiledMapRenderer = new OrthogonalTiledMapRenderer(winterMap);
     }
-    /**Allows the map to be changed to the default map*/
     public void defaultMap(){
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
     }
-
     @Override
     public void draw(Batch batch, float parentAlpha) {
         batch.end();

@@ -24,10 +24,12 @@ import java.util.ArrayList;
 public class LandPlot extends Actor {
     /**The building placed on the area of land/*/
     private Building buildingPlaced;
+    private Building buildingHovered;
     /**The maximum allowed size of buildings.*/
     private final int maxSize;
     private final int x, y, width, height;
     private boolean occupied;
+    private boolean hovered;
 
     public Button getButton() {
         return button;
@@ -53,7 +55,9 @@ public class LandPlot extends Actor {
         this.width = width;
         this.height = height;
         buildingPlaced = null;
+        buildingHovered = null;
         occupied = false;
+        hovered = false;
         greenTexture = new Texture(Gdx.files.internal("textures/green.png"));
         redTexture = new Texture(Gdx.files.internal("textures/red.png"));
         seeThroughTexture = new Texture(Gdx.files.internal("textures/SeeThrough.png"));
@@ -72,22 +76,58 @@ public class LandPlot extends Actor {
         button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // If a building is selected for placement, the LandPlot is unoccupied, and the building selected is
-                // within the size limit.
                 if (main.selectedBuilding > -1
                     && !isOccupied()
-                    && main.buildingTypes[main.selectedBuilding].getSize() <= maxSize)  {
-                    // Sets the building of the LandPlot, and the texture needed for the image.
+                    && main.buildingTypes[main.selectedBuilding].getSize() <= maxSize) {
+                    // Place the building
                     buildingPlaced = main.buildingTypes[main.selectedBuilding].deepCopy();
 
+                    // Set the land plot's image to the placed building's actual texture
                     imageTexture = new Texture(Gdx.files.internal(buildingPlaced.getPath()));
+                    image.setDrawable(new TextureRegionDrawable(new TextureRegion(imageTexture)));
 
-                    // Disables the state of a building being selected for placement.
-                    main.selectedBuilding = -1;
+                    // Mark the plot as occupied
                     setOccupied();
+
+                    // Deselect the building
+                    main.selectedBuilding = -1;
+                }
+            }
+
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                if (main.selectedBuilding > -1
+                    && !isOccupied()
+                    && main.buildingTypes[main.selectedBuilding].getSize() <= maxSize) {
+                    hovered = true;
+                    // Place the building
+                    buildingHovered = main.buildingTypes[main.selectedBuilding].deepCopy();
+
+                    // Set the land plot's image to the placed building's actual texture
+                    imageTexture = new Texture(Gdx.files.internal(buildingHovered.getPath()));
+                    image.setDrawable(new TextureRegionDrawable(new TextureRegion(imageTexture)));
+                    image.setColor(1, 1, 1, 0.5f); // Set transparency to make it ghost-like
+
+                }
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                if (!isOccupied()) {
+                    hovered = false;
+                    // Reset to the default "empty" texture
+                    image.setDrawable(new TextureRegionDrawable(new TextureRegion(seeThroughTexture)));
+                    image.setColor(1, 1, 1, 1); // Reset transparency to normal
+                } else {
+                    // Keep the actual placed building's texture
+                    image.setDrawable(new TextureRegionDrawable(new TextureRegion(imageTexture)));
+                    image.setColor(1, 1, 1, 1); // Reset transparency to normal
                 }
             }
         });
+
+
+
     }
 
     @Override
@@ -98,7 +138,8 @@ public class LandPlot extends Actor {
         if (main.selectedBuilding > -1 && !isOccupied()) {
             // If the building selected is within size constraints.
             if (main.buildingTypes[main.selectedBuilding].getSize() <= maxSize) {
-                image.setDrawable(new TextureRegionDrawable(new TextureRegion(greenTexture)));
+                if (!hovered){
+                image.setDrawable(new TextureRegionDrawable(new TextureRegion(greenTexture)));}
             }
             else {
                 image.setDrawable(new TextureRegionDrawable(new TextureRegion(redTexture)));

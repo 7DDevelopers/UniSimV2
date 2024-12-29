@@ -30,7 +30,7 @@ public class LeaderboardStage extends Stage {
     /**Initialises the leaderboard scene*/
     public void initialize(){
         // Sets up a back button to take the user back to the menu scene
-        backLeaderboard = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/BackButton.png")))));
+        backLeaderboard = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("buttons/BackNew.png")))));
         backLeaderboard.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

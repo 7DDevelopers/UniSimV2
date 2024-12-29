@@ -26,7 +26,7 @@ public class EndTimeStage extends Stage {
         // Sets up "Time up" text
         Image endTimeText = new Image(new Texture(Gdx.files.internal("text/TimeUpText.png")));
         // Sets up a quit button
-        ImageButton quitButtonTS = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture("buttons/Quit.png"))));
+        ImageButton quitButtonTS = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture("buttons/QuitNew.png"))));
         quitButtonTS.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -43,7 +43,7 @@ public class EndTimeStage extends Stage {
         saveTextField.setAlignment(Align.center);
 
         // Sets up a save Button
-        ImageButton saveButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture("buttons/Save.png"))));
+        ImageButton saveButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture("buttons/SaveNew.png"))));
         saveButton.setDisabled(true); // Initially disabled
 
         saveTextField.addListener(new InputListener() {

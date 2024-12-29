@@ -8,10 +8,10 @@ public class Winter extends Event{
     /** Overrides the default bonus scores of the Event class*/
     @Override
     public void setBonusScores(){
-        lectureHallBonus = 2;
-        accommodationBonus = 10;
-        foodHallBonus = 2;
-        gymBonus = -2;
-        clubBonus = -2;
+        lectureHallBonus = 0;
+        accommodationBonus = 0;
+        foodHallBonus = 10;
+        gymBonus = 0;
+        clubBonus = 0;
     }
 }
