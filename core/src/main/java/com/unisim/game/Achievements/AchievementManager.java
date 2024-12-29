@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.sun.tools.javac.Main;
 import com.unisim.game.LandPlot;
+import com.unisim.game.Leaderboard.Entry;
 import com.unisim.game.Stages.MainStage;
 import com.unisim.game.main;
 
@@ -31,6 +32,14 @@ public class AchievementManager {
     private boolean playingAnimation;
     private Achievement recentAchievement;
 
+    private String defaultData = """
+        Prestigious University,Achieve a student satisfaction of 75%,Prestigious.png,0,75,true,0
+        Clubber,Build 3 clubs in one game,Clubber.png,0,3,true,1
+        Builder,Place a building in every slot,Builder.png,0,9,true,2
+        Lecturer,Finish 3 games,Clubber.png,0,3,false,3
+        Environmentalist,Place no buildings,Clubber.png,0,0,false,4
+    """;
+
     public AchievementManager(String path, main game){
         this.game = game;
         this.path = path;
@@ -40,35 +49,34 @@ public class AchievementManager {
         this.playingAnimation = false;
         this.recentAchievement = null;
         if(file.exists() == false){
-            try{file.createNewFile();
-            writeDefaultAchievements(file);}
+            try{file.createNewFile();}
             catch (IOException e){
                 System.err.println("Error creating file");
             }
         }
+
         importAchievements();
+        importObtainedAchievements();
     }
 
-    // Helper method to write default achievements to the file
-    private void writeDefaultAchievements(File file) {
-        String defaultData = """
-        Prestigious University,Achieve a student satisfaction of 75%,Prestigious.png,0,75,false
-        Clubber,Build 3 clubs in one game,Clubber.png,0,3,false
-        Builder,Place a building in every slot,Builder.png,0,9,false
-        Lecturer,Finish 3 games,Clubber.png,0,3,false
-        Environmentalist,Place no buildings,Clubber.png,0,0,false
-    """;
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-            writer.write(defaultData.trim());
-        } catch (IOException e) {
-            System.err.println("Error writing default achievements to file: " + e.getMessage());
-            e.printStackTrace();
+    public void importObtainedAchievements() {
+        BufferedReader reader = null;
+        String line = "";
+        try {
+            reader = new BufferedReader(new FileReader("obtainedAchievements.csv"));
+            while ((line = reader.readLine()) != null) {
+
+                achievements.get(Integer.parseInt(line)).setObtained(true);
+            }
+        } catch (Exception e) {
+            System.err.println("Error reading obtained achievements");
+        } finally {
+            try {
+                reader.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
-    }
-
-    public void addAchievement(String name, String description, Image thumbnail, int currentProgress, int requiredProgress, boolean continuous){
-        Achievement scoreAchievement = new Achievement(name, description, thumbnail, currentProgress, requiredProgress, continuous);
-        achievements.add(scoreAchievement);
     }
 
     public void importAchievements(){
@@ -77,11 +85,11 @@ public class AchievementManager {
         BufferedReader reader = null;
         String line = "";
         try{
-            reader = new BufferedReader(new FileReader(path));
+            reader = new BufferedReader(new StringReader(defaultData));
             while((line = reader.readLine()) != null){
 
                 String[] row = line.split(",");
-                Achievement achievement = new Achievement(row[0], row[1], new Image(new Texture("ui/AchievementImages/" + row[2])), Integer.parseInt(row[3]), Integer.parseInt(row[4]), row[5].equals("true"));
+                Achievement achievement = new Achievement(row[0], row[1], new Image(new Texture("ui/AchievementImages/" + row[2])), Integer.parseInt(row[3]), Integer.parseInt(row[4]), row[5].equals("true"), Integer.parseInt(row[6]));
                 achievements.add(achievement);
             }
         }
@@ -96,22 +104,6 @@ public class AchievementManager {
                 throw new RuntimeException(e);
             }
         }
-    }
-
-    public void writeLeaderBoard()  {
-        File file = new File(path);
-        try{
-            PrintWriter out = new PrintWriter(file);
-
-            for(Achievement achievement : achievements){
-                out.printf("%s,%d\n", achievement.getName(), achievement.getDescription());
-            }
-            out.close();
-        }
-        catch (IOException e){
-            System.err.println("Error writing achievements");
-        }
-
     }
 
     //Listen for achievements
@@ -144,6 +136,8 @@ public class AchievementManager {
                 if (achievement.getCurrentProgress() >= achievement.getRequiredProgress()) {
                     System.out.println("Obtained: " + achievement.getName());
                     achievement.setObtained(true);
+                    writeAchievement(achievement);
+
                     recentAchievement = achievement;
                     playingAnimation = true;
                     game.mainStage.initializeAchievementPopup(achievement);
@@ -171,6 +165,7 @@ public class AchievementManager {
                 if (achievement.getCurrentProgress() >= achievement.getRequiredProgress()) {
                     System.out.println("Obtained: " + achievement.getName());
                     achievement.setObtained(true);
+                    writeAchievement(achievement);
                 }
             }
         }
@@ -180,6 +175,27 @@ public class AchievementManager {
         achievements.clear();
     }
 
+    public void writeAchievement(Achievement achievement)  {
+        File file = new File("obtainedAchievements.csv");
+        if(!file.exists()){
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        try{
+            PrintWriter out = new PrintWriter(new FileWriter("obtainedAchievements.csv", true));
+
+            out.println(achievement.getID());
+
+            out.close();
+        }
+        catch (IOException e){
+            System.err.println("Error writing leaderboard");
+        }
+    }
 
     public List<Achievement> getAchievements() {
         return achievements;

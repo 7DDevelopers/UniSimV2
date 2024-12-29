@@ -7,13 +7,15 @@ public class Achievement {
     private String description;
     private Image thumbnail;
 
+    private int ID;
+
     private int currentProgress;
     private int requiredProgress;
     private boolean continuous;
 
     private boolean obtained;
 
-    public Achievement(String name, String desc, Image thumbnail, int currentProgress, int requiredProgress, boolean continuous) {
+    public Achievement(String name, String desc, Image thumbnail, int currentProgress, int requiredProgress, boolean continuous, int ID) {
         this.name = name;
         this.description = desc;
         this.thumbnail = thumbnail;
@@ -21,6 +23,7 @@ public class Achievement {
         this.requiredProgress = requiredProgress;
         this.continuous = continuous;
         this.obtained = false;
+        this.ID = ID;
     }
 
     public void setRequirements(){
@@ -33,6 +36,14 @@ public class Achievement {
 
     public String getDescription() {
         return description;
+    }
+
+    public int getID(){
+        return ID;
+    }
+
+    void setID(int newID){
+        ID = newID;
     }
 
     public Image getThumbnail(){
