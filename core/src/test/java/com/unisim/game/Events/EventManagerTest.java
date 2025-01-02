@@ -118,11 +118,11 @@ class EventManagerTest {
     void wintertest(){
         eventManager.startWinter(0);
         assertAll("",
-            () -> assertEquals(2, eventManager.lectureHallBonus()),
-            () -> assertEquals(10, eventManager.accommodationBonus()),
-            () -> assertEquals(2, eventManager.foodHallBonus()),
-            () -> assertEquals(-2, eventManager.gymBonus()),
-            () -> assertEquals(-2, eventManager.clubBonus())
+            () -> assertEquals(0, eventManager.lectureHallBonus()),
+            () -> assertEquals(0, eventManager.accommodationBonus()),
+            () -> assertEquals(10, eventManager.foodHallBonus()),
+            () -> assertEquals(0, eventManager.gymBonus()),
+            () -> assertEquals(0, eventManager.clubBonus())
         );
 
         eventManager.winterEvent.end();

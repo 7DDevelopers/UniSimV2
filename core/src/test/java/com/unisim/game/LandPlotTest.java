@@ -1,14 +1,14 @@
 package com.unisim.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.unisim.game.Stages.MainStage;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,59 +16,114 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import org.mockito.MockedConstruction;
-import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 
 class LandPlotTest {
 
-    LandPlot[] landPlots;
+    LandPlot smallLandPlot;
+    LandPlot largeLandPlot;
 
-    @BeforeEach
-    void setUp() {
-        MainStage mainStage = mock(MainStage.class);
+    @BeforeAll
+    static void mockSetUp() {
         Gdx.files = mock(com.badlogic.gdx.Files.class);
         MockedConstruction<Texture> mockedTexture = Mockito.mockConstruction(Texture.class);
         MockedConstruction<Skin> mockedSkin = Mockito.mockConstruction(Skin.class);
+    }
 
-        initialise();
+    @BeforeEach
+    void setUp() {
+        smallLandPlot = new LandPlot(2, 0, 0, 80, 80);
+        largeLandPlot = new LandPlot(3, 0, 0, 120, 120);
     }
 
     @Test
-    void testButtonClickSetsBuilding() {
-        when(main.selectedBuilding).thenReturn(0);
+    void buttonClickWithSelectedBuildingTest() {
+        main.selectedBuilding = 0;
 
-        Button button = landPlots[0].getButton();
+        simulateTouchEvent(largeLandPlot);
 
-        InputEvent inputEvent = new InputEvent();
-        inputEvent.setType(InputEvent.Type.touchDown);
-        inputEvent.setStage(landPlots[0].getStage());
-
-        button.fire(inputEvent);
-
-        assertTrue(landPlots[0].isOccupied());
-        assertNotNull(landPlots[0].getBuildingPlaced());
+        assertTrue(largeLandPlot.isOccupied());
+        assertNotNull(largeLandPlot.getBuildingPlaced());
+        assertEquals(-1, main.selectedBuilding);
     }
 
     @Test
-    void legalPlacementTest() {
+    void buttonClickWithoutSelectedBuildingTest() {
+        main.selectedBuilding = -1;
 
+        simulateTouchEvent(largeLandPlot);
+
+        assertFalse(largeLandPlot.isOccupied());
+        assertNull(largeLandPlot.getBuildingPlaced());
+        assertEquals(-1, main.selectedBuilding);
+    }
+
+    @Test
+    void largeBuildingOnLargeLandPlotTest() {
+        main.selectedBuilding = 0;
+
+        simulateTouchEvent(largeLandPlot);
+
+        assertTrue(largeLandPlot.isOccupied());
+        assertNotNull(largeLandPlot.getBuildingPlaced());
+        assertEquals("Accommodation", largeLandPlot.getBuildingPlaced().getName());
+        assertEquals(-1, main.selectedBuilding);
+    }
+
+    @Test
+    void smallBuildingOnSmallLandPlotTest() {
+        main.selectedBuilding = 3;
+
+        simulateTouchEvent(smallLandPlot);
+
+        assertTrue(smallLandPlot.isOccupied());
+        assertNotNull(smallLandPlot.getBuildingPlaced());
+        assertEquals("Gym", smallLandPlot.getBuildingPlaced().getName());
+        assertEquals(-1, main.selectedBuilding);
+    }
+
+    @Test
+    void smallBuildingOnLargeLandPlotTest() {
+        main.selectedBuilding = 3;
+
+        simulateTouchEvent(largeLandPlot);
+
+        assertTrue(largeLandPlot.isOccupied());
+        assertNotNull(largeLandPlot.getBuildingPlaced());
+        assertEquals("Gym", largeLandPlot.getBuildingPlaced().getName());
+        assertEquals(-1, main.selectedBuilding);
+    }
+
+    @Test
+    void largeBuildingOnSmallLandPlotTest() {
+        main.selectedBuilding = 0;
+
+        simulateTouchEvent(smallLandPlot);
+
+        assertFalse(smallLandPlot.isOccupied());
+        assertNull(smallLandPlot.getBuildingPlaced());
+        assertEquals(0, main.selectedBuilding);
+    }
+
+    @Test
+    void placeBuildingOnOccupiedLandPlotTest() {
+        main.selectedBuilding = 0;
+        simulateTouchEvent(largeLandPlot);
+
+        main.selectedBuilding = 1;
+        simulateTouchEvent(largeLandPlot);
+
+        assertTrue(largeLandPlot.isOccupied());
+        assertNotNull(largeLandPlot.getBuildingPlaced());
+        assertEquals("Accommodation", largeLandPlot.getBuildingPlaced().getName());
     }
 
     private void simulateTouchEvent(LandPlot landPlot) {
-    }
+        InputEvent inputEvent = new InputEvent();
+        inputEvent.setType(InputEvent.Type.touchUp);
 
-    private void initialise(){
-        landPlots = new LandPlot[9];
-        landPlots[0] = new LandPlot(2, 360 + (int) (8.5 * 40), 2 * 40, 80, 80);
-        landPlots[1] = new LandPlot(2, 360 + (int) (3.5 * 40), 2 * 40, 80, 80);
-        landPlots[2] = new LandPlot(3, 360 + 3 * 40, (int) (5.5 * 40), 120, 120);
-        landPlots[3] = new LandPlot(3, 360 + 3 * 40, (int) (8.6 * 40), 120, 120);
-        landPlots[4] = new LandPlot(3, 360 + (int) (12.5 * 40), (13 * 40), 120, 120);
-        landPlots[5] = new LandPlot(3, 360 + (int) (16.7 * 40), (11 * 40), 120, 120);
-        landPlots[6] = new LandPlot(3, 360 + (int) (20.7 * 40), 11 * 40, 120, 120);
-        landPlots[7] = new LandPlot(3, 360 + (int) (24.2 * 40), 11 * 40, 120, 120);
-        landPlots[8] = new LandPlot(2, 360 + 24 * 40, (int) (6.5 * 40), 80, 80);
-
+        ClickListener listener = (ClickListener) landPlot.getButton().getListeners().get(1);
+        listener.clicked(inputEvent, 0, 0);
     }
 }

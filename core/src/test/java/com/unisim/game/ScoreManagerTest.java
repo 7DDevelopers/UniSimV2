@@ -176,6 +176,7 @@ class ScoreManagerTest {
         assertEquals(5, scoreManager.getSatisfaction());
     }
 
+
     private void setLandPlots(){
         landPlots = new LandPlot[9];
         landPlots[0] = spy(new LandPlot(2, 360 + (int) (8.5 * 40), 2 * 40, 80, 80));
