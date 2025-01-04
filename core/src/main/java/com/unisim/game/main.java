@@ -123,7 +123,7 @@ public class main extends ApplicationAdapter implements InputProcessor {
             mainStage.timeTextLabel.setText(String.format("%d:%02d", minutes, seconds));
 
             //Check Achievements
-            achievementManager.CheckContinuousAchievements();
+            achievementManager.checkContinuousAchievements();
 
             //Play animation if needed
             if (achievementManager.isPlayingAnimation()){

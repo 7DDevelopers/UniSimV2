@@ -37,7 +37,7 @@ public class AchievementManager {
         Clubber,Build 3 clubs in one game,Clubber.png,0,3,true,1
         Builder,Place a building in every slot,Builder.png,0,9,true,2
         Lecturer,Finish 3 games,Clubber.png,0,3,false,3
-        Environmentalist,Place no buildings,Clubber.png,0,0,false,4
+        Environmentalist,Place no buildings,Clubber.png,0,9,false,4
     """;
 
     public AchievementManager(String path, main game){
@@ -107,7 +107,7 @@ public class AchievementManager {
     }
 
     //Listen for achievements
-    public void CheckContinuousAchievements(){
+    public void checkContinuousAchievements(){
         //Prestigious
         achievements.get(0).setCurrentProgress(game.mainStage.scoreManager.getSatisfaction());
 
@@ -152,8 +152,9 @@ public class AchievementManager {
 
         //Environmentalist
         int lpCount = 0;
-        for (LandPlot landPlot : game.mainStage.getLandPlots()) {
-            if(landPlot.getBuildingPlaced() != null) {
+        LandPlot[] landPlots = game.mainStage.getLandPlots();
+        for (LandPlot landPlot : landPlots) {
+            if(landPlot.getBuildingPlaced() == null) {
                 lpCount++;
             }
         }
