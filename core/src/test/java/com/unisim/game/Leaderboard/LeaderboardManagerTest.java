@@ -18,11 +18,11 @@ class LeaderboardManagerTest {
 
     @Test
     void addEntry() {
-        leaderboardManager.addEntry("Jerome", 10);
-        leaderboardManager.addEntry("Luke", 5);
+        leaderboardManager.addEntry("User1", 10);
+        leaderboardManager.addEntry("User2", 5);
         List<Entry> correctResult = new ArrayList<>();
-        correctResult.add(new Entry("Jerome", 10));
-        correctResult.add(new Entry("Luke", 5));
+        correctResult.add(new Entry("User1", 10));
+        correctResult.add(new Entry("User2", 5));
         for (int i = 0; i < correctResult.size(); i++) {
             assertTrue(entryEqual(leaderboardManager.getLeaderboard().get(i),correctResult.get(i)));
         }

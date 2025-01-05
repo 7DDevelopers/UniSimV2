@@ -176,6 +176,37 @@ class ScoreManagerTest {
         assertEquals(5, scoreManager.getSatisfaction());
     }
 
+    @Test
+    void scoreTest() {
+        Building mockAccomodationBuilding = mock(Building.class);
+        when(mockAccomodationBuilding.getName()).thenReturn("Accommodation");
+        when(mainStage.getLandPlots()).thenReturn(landPlots);
+
+        assertEquals(0, scoreManager.getScore());
+
+        //simulate time pass
+        for (int i = 0; i < 10; i++) {
+            scoreManager.getSatisfaction();
+            scoreManager.updateScore();
+        }
+        assertEquals(0, scoreManager.getScore());
+
+        when(landPlots[2].isOccupied()).thenReturn(true);
+        when(landPlots[2].getBuildingPlaced()).thenReturn(mockAccomodationBuilding);
+        for (int i = 0; i < 10; i++) {
+            scoreManager.getSatisfaction();
+            scoreManager.updateScore();
+        }
+        assertEquals(100, scoreManager.getScore());
+
+        eventManager.startFreshersWeek(0);
+        for (int i = 0; i < 10; i++) {
+            scoreManager.getSatisfaction();
+            scoreManager.updateScore();
+        }
+        assertEquals(350, scoreManager.getScore());
+    }
+
 
     private void setLandPlots(){
         landPlots = new LandPlot[9];

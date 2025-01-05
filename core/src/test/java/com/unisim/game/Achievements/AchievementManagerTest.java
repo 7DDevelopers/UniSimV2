@@ -70,7 +70,7 @@ class AchievementManagerTest {
         when(mockMainStage.getLandPlots()).thenReturn(landPlots);
         when(scoreManager.getSatisfaction()).thenReturn(80);
 
-        achievementManager.checkContinuousAchievements();
+        achievementManager.CheckContinuousAchievements();
 
         assertTrue(achievementManager.getAchievements().get(0).isObtained());
     }
@@ -84,7 +84,7 @@ class AchievementManagerTest {
             simulateTouchEvent(landPlots[i]);
         }
 
-        achievementManager.checkContinuousAchievements();
+        achievementManager.CheckContinuousAchievements();
         assertTrue(achievementManager.getAchievements().get(1).isObtained());
     }
 
@@ -95,14 +95,14 @@ class AchievementManagerTest {
         for (int i = 0; i < landPlots.length - 1; i++) {
             main.selectedBuilding = 3;
             simulateTouchEvent(landPlots[i]);
-            achievementManager.checkContinuousAchievements();
+            achievementManager.CheckContinuousAchievements();
             assertFalse(achievementManager.getAchievements().get(2).isObtained());
         }
 
         main.selectedBuilding = 3;
         simulateTouchEvent(landPlots[8]);
 
-        achievementManager.checkContinuousAchievements();
+        achievementManager.CheckContinuousAchievements();
         assertTrue(achievementManager.getAchievements().get(2).isObtained());
     }
 
