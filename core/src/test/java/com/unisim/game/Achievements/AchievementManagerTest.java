@@ -68,7 +68,7 @@ class AchievementManagerTest {
     void prestigiousTest() {
         assertFalse(achievementManager.getAchievements().get(0).isObtained());
         when(mockMainStage.getLandPlots()).thenReturn(landPlots);
-        when(scoreManager.getSatisfaction()).thenReturn(80);
+        when(scoreManager.getSatisfaction()).thenReturn(75);
 
         achievementManager.CheckContinuousAchievements();
 

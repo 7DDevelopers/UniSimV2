@@ -52,11 +52,11 @@ public class AchievementManager {
     // Helper method to write default achievements to the file
     private void writeDefaultAchievements(File file) {
         String defaultData = """
-        Prestigious University,Achieve a student satisfaction of 75%,Prestigious.png,0,75,false
-        Clubber,Build 3 clubs in one game,Clubber.png,0,3,false
-        Builder,Place a building in every slot,Builder.png,0,9,false
+        Prestigious University,Achieve a student satisfaction of 75%,Prestigious.png,0,75,true
+        Clubber,Build 3 clubs in one game,Clubber.png,0,3,true
+        Builder,Place a building in every slot,Builder.png,0,9,true
         Lecturer,Finish 3 games,Clubber.png,0,3,false
-        Environmentalist,Place no buildings,Clubber.png,0,0,false
+        Environmentalist,Place no buildings,Clubber.png,0,9,false
     """;
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             writer.write(defaultData.trim());
@@ -159,7 +159,7 @@ public class AchievementManager {
         //Environmentalist
         int lpCount = 0;
         for (LandPlot landPlot : game.mainStage.getLandPlots()) {
-            if(landPlot.getBuildingPlaced() != null) {
+            if(landPlot.getBuildingPlaced() == null) {
                 lpCount++;
             }
         }
