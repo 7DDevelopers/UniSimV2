@@ -13,8 +13,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
 
@@ -27,8 +25,11 @@ class LandPlotTest {
     @BeforeAll
     static void mockSetUp() {
         Gdx.files = mock(com.badlogic.gdx.Files.class);
-        MockedConstruction<Texture> mockedTexture = Mockito.mockConstruction(Texture.class);
-        MockedConstruction<Skin> mockedSkin = Mockito.mockConstruction(Skin.class);
+        try{
+            Mockito.mockConstruction(Texture.class);
+            Mockito.mockConstruction(Skin.class);
+        } catch (Exception e) {
+        }
     }
 
     @BeforeEach

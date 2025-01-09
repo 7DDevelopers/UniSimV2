@@ -17,7 +17,7 @@ class LeaderboardManagerTest {
     }
 
     @Test
-    void addEntry() {
+    void addEntryTest() {
         leaderboardManager.addEntry("User1", 10);
         leaderboardManager.addEntry("User2", 5);
         List<Entry> correctResult = new ArrayList<>();

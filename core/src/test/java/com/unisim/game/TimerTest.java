@@ -20,8 +20,11 @@ public class TimerTest {
     @BeforeAll
     static void mockSetUp() {
         Gdx.files = mock(com.badlogic.gdx.Files.class);
-        MockedConstruction<Texture> mockedTexture = Mockito.mockConstruction(Texture.class);
-        MockedConstruction<Skin> mockedSkin = Mockito.mockConstruction(Skin.class);
+        try{
+            Mockito.mockConstruction(Texture.class);
+            Mockito.mockConstruction(Skin.class);
+        } catch (Exception e) {
+        }
     }
 
     @BeforeEach

@@ -35,8 +35,11 @@ class AchievementManagerTest {
     @BeforeAll
     void mockSetUp() {
         Gdx.files = mock(com.badlogic.gdx.Files.class);
-        MockedConstruction<Texture> mockedTexture = Mockito.mockConstruction(Texture.class);
-        MockedConstruction<Skin> mockedSkin = Mockito.mockConstruction(Skin.class);
+        try{
+            MockedConstruction<Texture> mockedTextureForAchievementManager = Mockito.mockConstruction(Texture.class);
+            MockedConstruction<Skin> mockedSkinForAchievementManager = Mockito.mockConstruction(Skin.class);
+        } catch(Exception e){
+        }
 
         landPlotsInitialise();
 
@@ -121,7 +124,7 @@ class AchievementManagerTest {
     }
 
     @Test
-    void enviromentalistTest() {
+    void environmentalistTest() {
         main.selectedBuilding = 4;
         simulateTouchEvent(landPlots[0]);
         when(mockMainStage.getLandPlots()).thenReturn(landPlots);

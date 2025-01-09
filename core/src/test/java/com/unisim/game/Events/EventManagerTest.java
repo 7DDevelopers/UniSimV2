@@ -31,7 +31,7 @@ class EventManagerTest {
     }
 
     @Test
-    void ExamSeasonTest() {
+    void examSeasonTest() {
         eventManager.startExamSeason(0);
         assertAll("",
             () -> assertEquals(10, eventManager.lectureHallBonus()),

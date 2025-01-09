@@ -33,8 +33,11 @@ class ScoreManagerTest {
     @BeforeAll
     static void mockSetUp() {
         Gdx.files = mock(com.badlogic.gdx.Files.class);
-        MockedConstruction<Texture> mockedTexture = Mockito.mockConstruction(Texture.class);
-        MockedConstruction<Skin> mockedSkin = Mockito.mockConstruction(Skin.class);
+        try {
+            Mockito.mockConstruction(Texture.class);
+            Mockito.mockConstruction(Skin.class);
+        } catch (Exception e) {
+        }
     }
 
     @BeforeEach
@@ -88,7 +91,7 @@ class ScoreManagerTest {
     }
 
     @Test
-    void accommodationNextToFoodHallText(){
+    void accommodationNextToFoodHallTest(){
         Building mockAccomodationBuilding = mock(Building.class);
         Building mockFoodHallBuilding = mock(Building.class);
         when(mockAccomodationBuilding.getName()).thenReturn("Accommodation");
@@ -103,7 +106,7 @@ class ScoreManagerTest {
     }
 
     @Test
-    void accommodationNextToGymText(){
+    void accommodationNextToGymTest(){
         Building mockAccomodationBuilding = mock(Building.class);
         Building mockGymBuilding = mock(Building.class);
         when(mockAccomodationBuilding.getName()).thenReturn("Accommodation");
@@ -133,7 +136,7 @@ class ScoreManagerTest {
     }
 
     @Test
-    void lectureHallText(){
+    void lectureHallTest(){
         Building mockLectureHallBuilding = mock(Building.class);
         when(mockLectureHallBuilding.getName()).thenReturn("LectureHall");
         when(landPlots[2].getBuildingPlaced()).thenReturn(mockLectureHallBuilding);
