@@ -9,7 +9,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,14 +20,6 @@ class ScoreManagerTest {
     LandPlot[] landPlots;
     EventManager eventManager;
     MainStage mainStage;
-
-    public static LandPlot[][] data(){
-        return new LandPlot[][] {};
-    }
-
-    public static int[] expected(){
-        return new int[] {};
-    }
 
     @BeforeAll
     static void mockSetUp() {

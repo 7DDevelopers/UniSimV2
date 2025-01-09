@@ -7,7 +7,6 @@ import com.unisim.game.Stages.MainStage;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -48,10 +47,6 @@ public class TimerTest {
     @Test
     public void testTimerDisplayUpdate() {
         // Simulate a few seconds passing and check if the time display updates correctly
-
-        // Initial time (5 minutes = 300 seconds)
-        int initialMinutes = 5;
-        int initialSeconds = 0;
 
         // Simulate the game time passing for 10 seconds
         for (int i = 0; i < 10; i++) {

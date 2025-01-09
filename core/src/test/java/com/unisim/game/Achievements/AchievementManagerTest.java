@@ -36,8 +36,8 @@ class AchievementManagerTest {
     void mockSetUp() {
         Gdx.files = mock(com.badlogic.gdx.Files.class);
         try{
-            MockedConstruction<Texture> mockedTextureForAchievementManager = Mockito.mockConstruction(Texture.class);
-            MockedConstruction<Skin> mockedSkinForAchievementManager = Mockito.mockConstruction(Skin.class);
+            Mockito.mockConstruction(Texture.class);
+            Mockito.mockConstruction(Skin.class);
         } catch(Exception e){
         }
 
