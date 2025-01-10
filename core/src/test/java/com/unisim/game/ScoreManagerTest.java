@@ -16,56 +16,65 @@ import static org.mockito.Mockito.*;
 
 class ScoreManagerTest {
 
+    // Declare objects for testing
     ScoreManager scoreManager;
     LandPlot[] landPlots;
     EventManager eventManager;
     MainStage mainStage;
 
+    // Static setup for mocking Gdx.files, Texture, and Skin classes before any tests run
     @BeforeAll
     static void mockSetUp() {
-        Gdx.files = mock(com.badlogic.gdx.Files.class);
+        Gdx.files = mock(com.badlogic.gdx.Files.class); // Mocking the Gdx.files class for file handling
         try {
+            // Mocking the construction of Texture and Skin objects to prevent actual resource loading during tests
             Mockito.mockConstruction(Texture.class);
             Mockito.mockConstruction(Skin.class);
         } catch (Exception e) {
+            // Catch any exceptions that may arise during the mocking process
         }
     }
 
+    // Setup method to initialize objects before each test
     @BeforeEach
     void setUp() {
-        mainStage = mock(MainStage.class);
-        scoreManager = new ScoreManager(mainStage);
-        eventManager = spy(new EventManager(mainStage));
-        mainStage.eventManager = eventManager;
+        mainStage = mock(MainStage.class); // Mock MainStage
+        scoreManager = new ScoreManager(mainStage); // Create ScoreManager instance with the mocked MainStage
+        eventManager = spy(new EventManager(mainStage)); // Create and spy on EventManager
+        mainStage.eventManager = eventManager; // Set the eventManager in the mainStage mock
 
-        when(mainStage.getLandPlots()).thenReturn(landPlots);
+        when(mainStage.getLandPlots()).thenReturn(landPlots); // Mock the getLandPlots method
 
-        setLandPlots();
+        setLandPlots(); // Initialize land plots for each test
     }
 
+    // Reset the land plots after each test
     @AfterEach
     void reset() {
-        setLandPlots();
+        setLandPlots(); // Reset the land plots for the next test
     }
 
+    // Test the initial satisfaction and score values
     @Test
     void initialTest() {
         when(mainStage.getLandPlots()).thenReturn(landPlots);
-        assertEquals(0, scoreManager.getSatisfaction());
-        assertEquals(0, scoreManager.getScore());
+        assertEquals(0, scoreManager.getSatisfaction()); // Verify that initial satisfaction is 0
+        assertEquals(0, scoreManager.getScore()); // Verify that initial score is 0
     }
 
+    // Test the satisfaction value when an accommodation building is placed
     @Test
     void accommodationTest() {
         Building mockAccommodationBuilding = mock(Building.class);
-        when(mockAccommodationBuilding.getName()).thenReturn("Accommodation");
-        when(landPlots[2].getBuildingPlaced()).thenReturn(mockAccommodationBuilding);
-        when(landPlots[2].isOccupied()).thenReturn(true);
+        when(mockAccommodationBuilding.getName()).thenReturn("Accommodation"); // Mock the name of the building
+        when(landPlots[2].getBuildingPlaced()).thenReturn(mockAccommodationBuilding); // Set the building in the land plot
+        when(landPlots[2].isOccupied()).thenReturn(true); // Set the land plot as occupied
         when(mainStage.getLandPlots()).thenReturn(landPlots);
 
-        assertEquals(10,scoreManager.getSatisfaction());
+        assertEquals(10, scoreManager.getSatisfaction()); // Verify satisfaction after placing accommodation
     }
 
+    // Test the satisfaction value when an accommodation building is next to a lecture hall
     @Test
     void accommodationNextToLectureHallTest(){
         Building mockAccomodationBuilding = mock(Building.class);
@@ -78,9 +87,10 @@ class ScoreManagerTest {
         when(landPlots[3].isOccupied()).thenReturn(true);
         when(mainStage.getLandPlots()).thenReturn(landPlots);
 
-        assertEquals(20, scoreManager.getSatisfaction());
+        assertEquals(20, scoreManager.getSatisfaction()); // Verify satisfaction when accommodation is next to lecture hall
     }
 
+    // Test the satisfaction value when an accommodation building is next to a food hall
     @Test
     void accommodationNextToFoodHallTest(){
         Building mockAccomodationBuilding = mock(Building.class);
@@ -93,9 +103,10 @@ class ScoreManagerTest {
         when(landPlots[3].isOccupied()).thenReturn(true);
         when(mainStage.getLandPlots()).thenReturn(landPlots);
 
-        assertEquals(20, scoreManager.getSatisfaction());
+        assertEquals(20, scoreManager.getSatisfaction()); // Verify satisfaction when accommodation is next to food hall
     }
 
+    // Test the satisfaction value when an accommodation building is next to a gym
     @Test
     void accommodationNextToGymTest(){
         Building mockAccomodationBuilding = mock(Building.class);
@@ -108,9 +119,10 @@ class ScoreManagerTest {
         when(landPlots[3].isOccupied()).thenReturn(true);
         when(mainStage.getLandPlots()).thenReturn(landPlots);
 
-        assertEquals(20, scoreManager.getSatisfaction());
+        assertEquals(20, scoreManager.getSatisfaction()); // Verify satisfaction when accommodation is next to gym
     }
 
+    // Test the satisfaction value when an accommodation building is next to a club
     @Test
     void accommodationNextToClubext(){
         Building mockAccomodationBuilding = mock(Building.class);
@@ -123,9 +135,10 @@ class ScoreManagerTest {
         when(landPlots[3].isOccupied()).thenReturn(true);
         when(mainStage.getLandPlots()).thenReturn(landPlots);
 
-        assertEquals(20, scoreManager.getSatisfaction());
+        assertEquals(20, scoreManager.getSatisfaction()); // Verify satisfaction when accommodation is next to club
     }
 
+    // Test the satisfaction value when a lecture hall is placed
     @Test
     void lectureHallTest(){
         Building mockLectureHallBuilding = mock(Building.class);
@@ -134,9 +147,10 @@ class ScoreManagerTest {
         when(landPlots[2].isOccupied()).thenReturn(true);
         when(mainStage.getLandPlots()).thenReturn(landPlots);
 
-        assertEquals(0, scoreManager.getSatisfaction());
+        assertEquals(0, scoreManager.getSatisfaction()); // Verify satisfaction when a lecture hall is placed (no bonus)
     }
 
+    // Test the satisfaction value when a food hall is placed
     @Test
     void foodhallTest(){
         Building mockFoodHallBuilding = mock(Building.class);
@@ -145,9 +159,10 @@ class ScoreManagerTest {
         when(landPlots[2].isOccupied()).thenReturn(true);
         when(mainStage.getLandPlots()).thenReturn(landPlots);
 
-        assertEquals(5, scoreManager.getSatisfaction());
+        assertEquals(5, scoreManager.getSatisfaction()); // Verify satisfaction when food hall is placed
     }
 
+    // Test the satisfaction value when a gym is placed
     @Test
     void gymTest(){
         Building mockGymBuilding = mock(Building.class);
@@ -156,9 +171,10 @@ class ScoreManagerTest {
         when(landPlots[2].isOccupied()).thenReturn(true);
         when(mainStage.getLandPlots()).thenReturn(landPlots);
 
-        assertEquals(5, scoreManager.getSatisfaction());
+        assertEquals(5, scoreManager.getSatisfaction()); // Verify satisfaction when gym is placed
     }
 
+    // Test the satisfaction value when a club is placed
     @Test
     void clubTest(){
         Building mockClubBuilding = mock(Building.class);
@@ -167,41 +183,44 @@ class ScoreManagerTest {
         when(landPlots[2].isOccupied()).thenReturn(true);
         when(mainStage.getLandPlots()).thenReturn(landPlots);
 
-        assertEquals(5, scoreManager.getSatisfaction());
+        assertEquals(5, scoreManager.getSatisfaction()); // Verify satisfaction when club is placed
     }
 
+    // Test the score calculation logic
     @Test
     void scoreTest() {
         Building mockAccomodationBuilding = mock(Building.class);
         when(mockAccomodationBuilding.getName()).thenReturn("Accommodation");
         when(mainStage.getLandPlots()).thenReturn(landPlots);
 
-        assertEquals(0, scoreManager.getScore());
+        assertEquals(0, scoreManager.getScore()); // Verify score is initially 0
 
-        //simulate time pass
+        // Simulate time passing and check if score changes
         for (int i = 0; i < 10; i++) {
             scoreManager.getSatisfaction();
             scoreManager.updateScore();
         }
-        assertEquals(0, scoreManager.getScore());
+        assertEquals(0, scoreManager.getScore()); // Verify that the score is still 0 after some time
 
+        // Set accommodation as placed and verify score increase
         when(landPlots[2].isOccupied()).thenReturn(true);
         when(landPlots[2].getBuildingPlaced()).thenReturn(mockAccomodationBuilding);
         for (int i = 0; i < 10; i++) {
             scoreManager.getSatisfaction();
             scoreManager.updateScore();
         }
-        assertEquals(100, scoreManager.getScore());
+        assertEquals(100, scoreManager.getScore()); // Verify score after accommodation placement
 
+        // Simulate event and verify further score increase
         eventManager.startFreshersWeek(0);
         for (int i = 0; i < 10; i++) {
             scoreManager.getSatisfaction();
             scoreManager.updateScore();
         }
-        assertEquals(350, scoreManager.getScore());
+        assertEquals(350, scoreManager.getScore()); // Verify score after Freshers Week event
     }
 
-
+    // Helper method to set up land plots for tests
     private void setLandPlots(){
         landPlots = new LandPlot[9];
         landPlots[0] = spy(new LandPlot(2, 360 + (int) (8.5 * 40), 2 * 40, 80, 80));
@@ -214,5 +233,4 @@ class ScoreManagerTest {
         landPlots[7] = spy(new LandPlot(3, 360 + (int) (24.2 * 40), 11 * 40, 120, 120));
         landPlots[8] = spy(new LandPlot(2, 360 + 24 * 40, (int) (6.5 * 40), 80, 80));
     }
-
 }
