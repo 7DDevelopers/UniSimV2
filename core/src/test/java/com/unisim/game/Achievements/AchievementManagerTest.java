@@ -185,11 +185,16 @@ class AchievementManagerTest {
 
     // Helper method to initialize land plots with mock data.
     private void landPlotsInitialise() {
-        landPlots = new LandPlot[9];  // Initialize the land plots array.
+        landPlots = new LandPlot[9];
         landPlots[0] = new LandPlot(2, 360 + (int)(8.5 * 40), 2 * 40, 80, 80);
         landPlots[1] = new LandPlot(2, 360 + (int)(3.5 * 40), 2 * 40, 80, 80);
         landPlots[2] = new LandPlot(3, 360 + 3 * 40, (int)(5.5 * 40), 120, 120);
-        // Additional land plots initialization goes here...
+        landPlots[3] = new LandPlot(3, 360 + 3 * 40, (int)(8.6 * 40), 120, 120);
+        landPlots[4] = new LandPlot(3, 360 + (int)(12.5 * 40), (13 * 40), 120, 120);
+        landPlots[5] = new LandPlot(3, 360 + (int)(16.7 * 40), (11 * 40), 120, 120);
+        landPlots[6] = new LandPlot(3, 360 + (int)(20.7 * 40), 11 * 40, 120, 120);
+        landPlots[7] = new LandPlot(3, 360 + (int)(24.2 * 40), 11 * 40, 120, 120);
+        landPlots[8] = new LandPlot(2, 360 + 24 * 40, (int)(6.5 * 40), 80, 80);
     }
 
     // Helper method to simulate a touch event on a land plot.
